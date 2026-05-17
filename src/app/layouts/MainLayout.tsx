@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "@/features/auth/model/useAuth";
+import { LanguagePairSelect } from "@/features/user-language-pairs/ui/LanguagePairSelect";
 
 export function MainLayout() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -23,6 +24,8 @@ export function MainLayout() {
         <nav className="app-nav">
           {isLoading ? null : isAuthenticated ? (
             <>
+              <LanguagePairSelect />
+
               <button
                 type="button"
                 onClick={handleLogout}
