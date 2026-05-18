@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { materialsApi } from "@/features/materials/api/materialsApi";
 import type { MaterialCard } from "@/features/materials/model/material.types";
 import { useAuth } from "@/features/auth/model/useAuth";
@@ -22,6 +23,7 @@ export function MaterialsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const loadMaterials = useCallback(async () => {
     if (isAuthLoading || isLanguagePairLoading) {
       return;
@@ -152,9 +154,7 @@ export function MaterialsPage() {
               key={material.id}
               type="button"
               className="material-card"
-              onClick={() => {
-                console.log("Open material:", material.id);
-              }}
+              onClick={() => navigate(`/materials/${material.id}`)}
             >
               <div className="material-card-header">
                 <span className="material-level">{material.languageLevel}</span>
