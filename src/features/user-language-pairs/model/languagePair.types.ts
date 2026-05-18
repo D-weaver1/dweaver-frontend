@@ -10,9 +10,11 @@ export type LanguagePair = {
   targetLanguage: Language;
 };
 
+export type UserLanguagePairStatus = "ACTIVE" | "HIDDEN" | "active" | "hidden";
+
 export type UserLanguagePair = {
   id: string;
-  status: string;
+  status: UserLanguagePairStatus;
   lastUsed: string;
   languagePair: LanguagePair;
 };
@@ -21,4 +23,10 @@ export type LanguagePairState = {
   shouldChooseLanguagePair: boolean;
   currentLanguagePair: LanguagePair | null;
   selectedLanguagePairs: UserLanguagePair[];
+};
+
+export type LanguagePairSettingsState = {
+  shouldChooseLanguagePair: boolean;
+  currentLanguagePair: LanguagePair | null;
+  userLanguagePairs: UserLanguagePair[];
 };
