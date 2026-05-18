@@ -5,6 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { languagePairApi } from "../api/languagePairApi";
 import type { LanguagePairState } from "./languagePair.types";
 import { LanguagePairContext } from "./languagePairContext";
@@ -16,6 +17,7 @@ type LanguagePairProviderProps = {
 
 export function LanguagePairProvider({ children }: LanguagePairProviderProps) {
   const { user, isLoading: isAuthLoading } = useAuth();
+  const { i18n } = useTranslation();
 
   const userId = user?.id ?? null;
 
@@ -95,6 +97,17 @@ export function LanguagePairProvider({ children }: LanguagePairProviderProps) {
   );
 
   const actualState = userId === loadedUserId ? state : null;
+
+  const sourceLanguageCode =
+    actualState?.currentLanguagePair?.sourceLanguage.code ?? null;
+
+  useEffect(() => {
+    if (!sourceLanguageCode || i18n.language === sourceLanguageCode) {
+      return;
+    }
+
+    void i18n.changeLanguage(sourceLanguageCode);
+  }, [sourceLanguageCode, i18n]);
 
   const isLoading = isAuthLoading || Boolean(userId && loadedUserId !== userId);
 

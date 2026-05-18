@@ -29,7 +29,8 @@
     "c1c2": "C1-C2"
   },
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "close": "Close"
   },
   "languagePair": {
     "choosePair": "Choose pair",
@@ -38,6 +39,24 @@
     "noPairs": "You do not have any language pairs yet",
     "addPair": "+ Add language pair",
     "availablePairs": "Available language pairs",
-    "noAvailablePairs": "No available language pairs"
+    "noAvailablePairs": "No available language pairs",
+    "manageLanguagePairs": "Manage language pairs",
+    "settingsTitle": "Language pairs",
+    "settingsDescription": "Manage your learning language pairs: add new ones, switch the current pair, hide pairs, or delete them completely.",
+    "selectedPairs": "Selected language pairs",
+    "addNewPair": "+ Add language pair",
+    "availablePairsDescription": "Choose a language pair you want to add to your learning.",
+    "addedPairsHint": "Only active language pairs available for quick switching are shown here.",
+    "select": "Select",
+    "actions": "Actions",
+    "hide": "Hide",
+    "delete": "Delete",
+    "linkedPairsHint": "All language pairs linked to your account are shown here, including hidden ones.",
+    "activate": "Activate",
+    "statusActive": "Active",
+    "statusHidden": "Hidden",
+    "noSelectedPairsDescription": "You do not have active language pairs yet. Add your first pair to start learning.",
+    "searchPlaceholder": "Search pair",
+    "add": "Add"
   }
 }

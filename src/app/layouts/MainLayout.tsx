@@ -84,9 +84,13 @@ export function MainLayout() {
                       )}
                     </div>
 
-                    <button type="button" className="profile-dropdown-button">
+                    <Link
+                      to="/settings/language-pairs"
+                      className="profile-dropdown-button"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
                       {t("profile.settings")}
-                    </button>
+                    </Link>
 
                     <button
                       type="button"
