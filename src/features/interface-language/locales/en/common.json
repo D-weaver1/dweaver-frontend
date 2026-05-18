@@ -1,0 +1,43 @@
+{
+  "auth": {
+    "logout": "Log out"
+  },
+  "profile": {
+    "user": "User",
+    "settings": "Settings",
+    "openProfileMenu": "Open profile menu"
+  },
+  "home": {
+    "title": "Home page"
+  },
+  "nav": {
+    "startLearning": "Start learning"
+  },
+  "materials": {
+    "title": "Learning materials",
+    "description": "Choose a material for adaptive reading. The list is generated for the current language pair.",
+    "authRequired": "Sign in to view learning materials.",
+    "choosePairRequired": "Choose a language pair before learning.",
+    "searchPlaceholder": "Search by title or text...",
+    "loading": "Loading materials...",
+    "loadError": "Failed to load materials",
+    "notFound": "No materials found"
+  },
+  "levels": {
+    "a1a2": "A1-A2",
+    "b1b2": "B1-B2",
+    "c1c2": "C1-C2"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "languagePair": {
+    "choosePair": "Choose pair",
+    "yourPairs": "Your language pairs",
+    "current": "Current",
+    "noPairs": "You do not have any language pairs yet",
+    "addPair": "+ Add language pair",
+    "availablePairs": "Available language pairs",
+    "noAvailablePairs": "No available language pairs"
+  }
+}
