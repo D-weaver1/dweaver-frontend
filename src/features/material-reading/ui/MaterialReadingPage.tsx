@@ -10,6 +10,11 @@ import type {
 import { ReadingText } from "./ReadingText";
 import { WordPopup } from "./WordPopup";
 
+type WordPopupPosition = {
+  top: number;
+  left: number;
+};
+
 export function MaterialReadingPage() {
   const { materialId, levelId } = useParams<{
     materialId: string;
@@ -21,6 +26,9 @@ export function MaterialReadingPage() {
   const [reading, setReading] = useState<MaterialReading | null>(null);
   const [selectedUnit, setSelectedUnit] =
     useState<TranslatedReadingUnit | null>(null);
+  const [popupPosition, setPopupPosition] = useState<WordPopupPosition | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(Boolean(materialId && levelId));
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -46,6 +54,7 @@ export function MaterialReadingPage() {
 
         setReading(data);
         setSelectedUnit(null);
+        setPopupPosition(null);
         setErrorMessage("");
       } catch {
         if (!isMounted) {
@@ -67,9 +76,22 @@ export function MaterialReadingPage() {
     };
   }, [materialId, levelId, t]);
 
+  function handleTranslatedUnitClick(
+    unit: TranslatedReadingUnit,
+    position: WordPopupPosition,
+  ) {
+    setSelectedUnit(unit);
+    setPopupPosition(position);
+  }
+
+  function closePopup() {
+    setSelectedUnit(null);
+    setPopupPosition(null);
+  }
+
   if (!materialId || !levelId) {
     return (
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="material-reading-message">
         {t("materialReading.reading.notFound")}
       </main>
     );
@@ -77,14 +99,14 @@ export function MaterialReadingPage() {
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="material-reading-message">
         {t("materialReading.reading.loading")}
       </main>
     );
   }
 
   if (errorMessage) {
-    return <main className="mx-auto max-w-4xl px-4 py-8">{errorMessage}</main>;
+    return <main className="material-reading-message">{errorMessage}</main>;
   }
 
   if (!reading) {
@@ -100,24 +122,28 @@ export function MaterialReadingPage() {
       });
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6">
-        <div className="text-sm text-gray-500">
+    <main className="material-reading-page">
+      <div className="material-reading-header">
+        <div className="material-reading-label">
           {t("materialReading.reading.levelLabel")}
         </div>
 
-        <h1 className="text-2xl font-semibold">{levelTitle}</h1>
+        <h1 className="material-reading-title">{levelTitle}</h1>
       </div>
 
-      <section className="rounded-2xl bg-white p-6 shadow-sm">
+      <section className="material-reading-text-card">
         <ReadingText
           units={reading.units}
-          onTranslatedUnitClick={setSelectedUnit}
+          onTranslatedUnitClick={handleTranslatedUnitClick}
         />
       </section>
 
-      {selectedUnit && (
-        <WordPopup unit={selectedUnit} onClose={() => setSelectedUnit(null)} />
+      {selectedUnit && popupPosition && (
+        <WordPopup
+          unit={selectedUnit}
+          position={popupPosition}
+          onClose={closePopup}
+        />
       )}
     </main>
   );

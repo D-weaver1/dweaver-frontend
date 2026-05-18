@@ -58,5 +58,47 @@
     "noSelectedPairsDescription": "You do not have active language pairs yet. Add your first pair to start learning.",
     "searchPlaceholder": "Search pair",
     "add": "Add"
+  },
+  "materialReading": {
+    "levelSelect": {
+      "title": "Choose reading level",
+      "description": "The level defines how many text units will be translated.",
+      "loading": "Loading levels...",
+      "error": "Failed to load material levels.",
+      "notFound": "Material not found.",
+      "translatedPercent": "{{factor}}% translated units",
+      "fallbackLevelName": "Level {{factor}}"
+    },
+    "reading": {
+      "loading": "Loading text...",
+      "error": "Failed to load reading material.",
+      "notFound": "Material not found.",
+      "levelLabel": "Reading level"
+    },
+    "wordPopup": {
+      "translatedUnit": "Translated unit",
+      "original": "Original",
+      "listen": "Listen",
+      "addToDictionary": "Add to dictionary",
+      "close": "Close"
+    },
+    "levels": {
+      "20": {
+        "title": "Soft start",
+        "description": "A small number of translated words for an easy start."
+      },
+      "40": {
+        "title": "Basic immersion",
+        "description": "A balanced mode with a moderate number of translations."
+      },
+      "60": {
+        "title": "Active reading",
+        "description": "More translated units for active reading practice."
+      },
+      "80": {
+        "title": "Intensive immersion",
+        "description": "Maximum immersion with many translated words."
+      }
+    }
   }
 }

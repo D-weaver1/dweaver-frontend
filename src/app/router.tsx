@@ -5,6 +5,8 @@ import { LoginPage } from "@/pages/login/LoginPage";
 import { RegisterPage } from "@/pages/register/RegisterPage";
 import { MaterialsPage } from "@/pages/materials/MaterialsPage";
 import { LanguagePairSettingsPage } from "@/features/user-language-pairs/ui/LanguagePairSettingsPage";
+import { MaterialLevelSelectPage } from "@/features/material-reading/ui/MaterialLevelSelectPage";
+import { MaterialReadingPage } from "@/features/material-reading/ui/MaterialReadingPage";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
       {
         path: "/settings/language-pairs",
         element: <LanguagePairSettingsPage />,
+      },
+      {
+        path: "/materials/:materialId",
+        element: <MaterialLevelSelectPage />,
+      },
+      {
+        path: "/materials/:materialId/levels/:levelId",
+        element: <MaterialReadingPage />,
       },
     ],
   },
