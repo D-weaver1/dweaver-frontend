@@ -58,7 +58,12 @@ export function MainLayout() {
           {isLoading ? null : isAuthenticated ? (
             <>
               {user?.role === "admin" && (
-                <Link to="/admin/ai-analysis">AI-обробка</Link>
+                <>
+                  <Link to="/admin/ai-analysis">
+                    {t("admin.nav.aiAnalysis")}
+                  </Link>
+                  <Link to="/admin/languages">{t("admin.nav.languages")}</Link>
+                </>
               )}
               <LanguagePairSelect />
 

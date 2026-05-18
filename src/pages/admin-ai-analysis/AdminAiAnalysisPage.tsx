@@ -5,6 +5,7 @@ import {
   useState,
   type FormEvent,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { adminAiAnalysisApi } from "@/features/admin-ai-analysis/api/adminAiAnalysisApi";
 import type {
   AiAnalysisJob,
@@ -22,6 +23,7 @@ const ACTIVE_JOB_STATUSES = new Set([
 ]);
 
 export function AdminAiAnalysisPage() {
+  const { t } = useTranslation();
   const { user, isLoading: isAuthLoading } = useAuth();
 
   const [languages, setLanguages] = useState<Language[]>([]);
@@ -116,7 +118,7 @@ export function AdminAiAnalysisPage() {
         setError(
           error instanceof Error
             ? error.message
-            : "Не вдалося завантажити дані адмінпанелі",
+            : t("admin.aiAnalysis.errors.loadFailed"),
         );
       })
       .finally(() => {
@@ -130,7 +132,7 @@ export function AdminAiAnalysisPage() {
     return () => {
       isCancelled = true;
     };
-  }, [isAuthLoading, isAdmin]);
+  }, [isAuthLoading, isAdmin, t]);
 
   useEffect(() => {
     if (!hasActiveJobs) {
@@ -179,12 +181,12 @@ export function AdminAiAnalysisPage() {
     setError("");
 
     if (!sourceLanguage) {
-      setError("Оберіть мову оригіналу");
+      setError(t("admin.aiAnalysis.errors.sourceLanguageRequired"));
       return;
     }
 
     if (targetLanguages.length === 0) {
-      setError("Оберіть хоча б одну цільову мову");
+      setError(t("admin.aiAnalysis.errors.targetLanguageRequired"));
       return;
     }
 
@@ -199,7 +201,9 @@ export function AdminAiAnalysisPage() {
         original_text: originalText,
       });
 
-      setMessage(`Створено задач: ${response.jobs.length}`);
+      setMessage(
+        t("admin.aiAnalysis.jobsCreated", { count: response.jobs.length }),
+      );
       setTitle("");
       setOriginalText("");
       setTargetLanguages([]);
@@ -209,7 +213,7 @@ export function AdminAiAnalysisPage() {
       setError(
         error instanceof Error
           ? error.message
-          : "Не вдалося створити задачі AI-обробки",
+          : t("admin.aiAnalysis.errors.createFailed"),
       );
     } finally {
       setIsSubmitting(false);
@@ -219,7 +223,7 @@ export function AdminAiAnalysisPage() {
   if (isAuthLoading || (isAdmin && isLoadingPage)) {
     return (
       <section className="admin-page">
-        <p className="materials-empty">Завантаження...</p>
+        <p className="materials-empty">{t("common.loading")}</p>
       </section>
     );
   }
@@ -228,10 +232,10 @@ export function AdminAiAnalysisPage() {
     return (
       <section className="admin-page">
         <div className="admin-panel-card">
-          <p className="page-label">Адмінпанель</p>
-          <h1>Доступ заборонено</h1>
+          <p className="page-label">{t("admin.common.adminPanel")}</p>
+          <h1>{t("admin.common.accessDenied")}</h1>
           <p className="page-description">
-            Ця сторінка доступна лише користувачам з роллю ADMIN.
+            {t("admin.common.accessDeniedDescription")}
           </p>
         </div>
       </section>
@@ -242,33 +246,32 @@ export function AdminAiAnalysisPage() {
     <section className="admin-page">
       <div className="admin-panel-header">
         <div>
-          <p className="page-label">Адмінпанель</p>
-          <h1>AI-обробка текстів</h1>
+          <p className="page-label">{t("admin.common.adminPanel")}</p>
+          <h1>{t("admin.aiAnalysis.title")}</h1>
           <p className="page-description">
-            Створіть задачу на автоматизований лексичний аналіз тексту. Worker
-            обробить її у фоновому режимі.
+            {t("admin.aiAnalysis.description")}
           </p>
         </div>
 
         <button type="button" className="secondary-button" onClick={loadJobs}>
-          Оновити jobs
+          {t("admin.aiAnalysis.refreshJobs")}
         </button>
       </div>
 
       <form className="admin-panel-card admin-ai-form" onSubmit={handleSubmit}>
         <label>
-          Назва матеріалу
+          {t("admin.aiAnalysis.materialTitle")}
           <input
             value={title}
             onChange={(event) => setTitle(event.target.value)}
-            placeholder="Наприклад: The Student Project"
+            placeholder={t("admin.aiAnalysis.materialTitlePlaceholder")}
             required
           />
         </label>
 
         <div className="admin-form-grid">
           <label>
-            Рівень
+            {t("admin.aiAnalysis.level")}
             <select
               value={languageLevel}
               onChange={(event) => setLanguageLevel(event.target.value)}
@@ -283,7 +286,7 @@ export function AdminAiAnalysisPage() {
           </label>
 
           <label>
-            Мова оригіналу
+            {t("admin.aiAnalysis.sourceLanguage")}
             <select
               value={sourceLanguage}
               onChange={(event) =>
@@ -292,7 +295,9 @@ export function AdminAiAnalysisPage() {
               required
             >
               {sourceLanguageOptions.length === 0 ? (
-                <option value="">Немає доступних мовних пар</option>
+                <option value="">
+                  {t("admin.aiAnalysis.noLanguagePairs")}
+                </option>
               ) : (
                 sourceLanguageOptions.map((language) => (
                   <option key={language.id} value={language.code}>
@@ -305,13 +310,17 @@ export function AdminAiAnalysisPage() {
         </div>
 
         <div>
-          <span className="admin-field-label">Цільові мови</span>
+          <span className="admin-field-label">
+            {t("admin.aiAnalysis.targetLanguages")}
+          </span>
 
           {!sourceLanguage ? (
-            <p className="admin-help-text">Спочатку оберіть мову оригіналу.</p>
+            <p className="admin-help-text">
+              {t("admin.aiAnalysis.chooseSourceFirst")}
+            </p>
           ) : targetLanguageOptions.length === 0 ? (
             <p className="admin-help-text">
-              Для обраної мови оригіналу ще немає доступних мовних пар.
+              {t("admin.aiAnalysis.noTargetPairs")}
             </p>
           ) : (
             <div className="admin-checkbox-list">
@@ -332,11 +341,11 @@ export function AdminAiAnalysisPage() {
         </div>
 
         <label>
-          Оригінальний текст
+          {t("admin.aiAnalysis.originalText")}
           <textarea
             value={originalText}
             onChange={(event) => setOriginalText(event.target.value)}
-            placeholder="Вставте текст для AI-обробки..."
+            placeholder={t("admin.aiAnalysis.originalTextPlaceholder")}
             rows={10}
             required
           />
@@ -350,20 +359,22 @@ export function AdminAiAnalysisPage() {
           className="primary-button"
           disabled={isSubmitting || targetLanguageOptions.length === 0}
         >
-          {isSubmitting ? "Створення задач..." : "Надіслати на AI-обробку"}
+          {isSubmitting
+            ? t("admin.aiAnalysis.creatingJobs")
+            : t("admin.aiAnalysis.submit")}
         </button>
       </form>
 
       <div className="admin-panel-card">
         <div className="admin-jobs-header">
           <div>
-            <p className="page-label">Черга</p>
-            <h2>Останні задачі</h2>
+            <p className="page-label">{t("admin.aiAnalysis.queue")}</p>
+            <h2>{t("admin.aiAnalysis.recentJobs")}</h2>
           </div>
         </div>
 
         {jobs.length === 0 ? (
-          <p className="materials-empty">Задачі ще не створені.</p>
+          <p className="materials-empty">{t("admin.aiAnalysis.noJobs")}</p>
         ) : (
           <div className="admin-jobs-list">
             {jobs.map((job) => (
@@ -383,15 +394,21 @@ export function AdminAiAnalysisPage() {
                 </div>
 
                 <div className="admin-job-meta">
-                  <span>attempts: {job.attempt_count}</span>
+                  <span>
+                    {t("admin.aiAnalysis.attempts")}: {job.attempt_count}
+                  </span>
+
                   {job.next_attempt_at && (
                     <span>
-                      next: {new Date(job.next_attempt_at).toLocaleString()}
+                      {t("admin.aiAnalysis.next")}:{" "}
+                      {new Date(job.next_attempt_at).toLocaleString()}
                     </span>
                   )}
+
                   {job.completed_at && (
                     <span>
-                      completed: {new Date(job.completed_at).toLocaleString()}
+                      {t("admin.aiAnalysis.completed")}:{" "}
+                      {new Date(job.completed_at).toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -402,7 +419,7 @@ export function AdminAiAnalysisPage() {
 
                 {job.result_json ? (
                   <details className="admin-job-result">
-                    <summary>Показати result_json</summary>
+                    <summary>{t("admin.aiAnalysis.showResultJson")}</summary>
                     <pre>{JSON.stringify(job.result_json, null, 2)}</pre>
                   </details>
                 ) : null}
