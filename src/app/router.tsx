@@ -6,6 +6,7 @@ import { RegisterPage } from "@/pages/register/RegisterPage";
 import { MaterialsPage } from "@/pages/materials/MaterialsPage";
 import { LanguagePairSettingsPage } from "@/features/user-language-pairs/ui/LanguagePairSettingsPage";
 import { AdminAiAnalysisPage } from "@/pages/admin-ai-analysis/AdminAiAnalysisPage";
+import { AdminLanguagesPage } from "@/pages/admin-languages/AdminLanguagesPage";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "admin/ai-analysis",
         element: <AdminAiAnalysisPage />,
+      },
+      {
+        path: "admin/languages",
+        element: <AdminLanguagesPage />,
       },
       {
         path: "login",

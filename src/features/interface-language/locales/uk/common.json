@@ -58,5 +58,84 @@
     "noSelectedPairsDescription": "У вас ще немає активних мовних пар. Додайте першу пару, щоб почати навчання.",
     "searchPlaceholder": "Пошук пари",
     "add": "Додати"
+  },
+  "admin": {
+    "nav": {
+      "aiAnalysis": "AI-обробка",
+      "languages": "Мови"
+    },
+    "common": {
+      "adminPanel": "Адмінпанель",
+      "accessDenied": "Доступ заборонено",
+      "accessDeniedDescription": "Ця сторінка доступна лише користувачам з роллю ADMIN.",
+      "refresh": "Оновити"
+    },
+    "aiAnalysis": {
+      "title": "AI-обробка текстів",
+      "description": "Створіть задачу на автоматизований лексичний аналіз тексту. Worker обробить її у фоновому режимі.",
+      "refreshJobs": "Оновити jobs",
+      "materialTitle": "Назва матеріалу",
+      "materialTitlePlaceholder": "Наприклад: The Student Project",
+      "level": "Рівень",
+      "sourceLanguage": "Мова оригіналу",
+      "targetLanguages": "Цільові мови",
+      "noLanguagePairs": "Немає доступних мовних пар",
+      "chooseSourceFirst": "Спочатку оберіть мову оригіналу.",
+      "noTargetPairs": "Для обраної мови оригіналу ще немає доступних мовних пар.",
+      "originalText": "Оригінальний текст",
+      "originalTextPlaceholder": "Вставте текст для AI-обробки...",
+      "submit": "Надіслати на AI-обробку",
+      "creatingJobs": "Створення задач...",
+      "queue": "Черга",
+      "recentJobs": "Останні задачі",
+      "noJobs": "Задачі ще не створені.",
+      "attempts": "спроби",
+      "next": "наступна спроба",
+      "completed": "завершено",
+      "showResultJson": "Показати result_json",
+      "jobsCreated": "Створено задач: {{count}}",
+      "errors": {
+        "loadFailed": "Не вдалося завантажити дані адмінпанелі",
+        "sourceLanguageRequired": "Оберіть мову оригіналу",
+        "targetLanguageRequired": "Оберіть хоча б одну цільову мову",
+        "createFailed": "Не вдалося створити задачі AI-обробки"
+      }
+    },
+    "languages": {
+      "title": "Мови та мовні пари",
+      "description": "Керуйте мовами та напрямами перекладу, які використовуються при створенні задач AI-обробки тексту.",
+      "language": "Мова",
+      "languagePair": "Мовна пара",
+      "addLanguage": "Додати мову",
+      "addPair": "Додати мовну пару",
+      "languageName": "Назва мови",
+      "languageNamePlaceholder": "Наприклад: German",
+      "languageCode": "Код мови",
+      "languageCodePlaceholder": "Наприклад: de",
+      "sourceLanguage": "Мова оригіналу",
+      "targetLanguage": "Цільова мова",
+      "addLanguageButton": "Додати мову",
+      "addPairButton": "Додати мовну пару",
+      "adding": "Додавання...",
+      "addLanguagesFirst": "Спочатку додайте мови",
+      "noAvailableLanguages": "Немає доступних мов",
+      "directory": "Довідник",
+      "directions": "Напрями",
+      "addedLanguages": "Додані мови",
+      "addedPairs": "Додані мовні пари",
+      "name": "Назва",
+      "code": "Код",
+      "noLanguages": "Мови ще не додані.",
+      "noPairs": "Мовні пари ще не додані.",
+      "languageCreated": "Мову успішно додано",
+      "pairCreated": "Мовну пару успішно додано",
+      "errors": {
+        "loadFailed": "Не вдалося завантажити мови та мовні пари",
+        "createLanguageFailed": "Не вдалося створити мову",
+        "createPairFailed": "Не вдалося створити мовну пару",
+        "chooseLanguages": "Оберіть мову оригіналу та цільову мову",
+        "sameLanguages": "Мова оригіналу та цільова мова мають відрізнятися"
+      }
+    }
   }
 }

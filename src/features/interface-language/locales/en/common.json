@@ -58,5 +58,84 @@
     "noSelectedPairsDescription": "You do not have active language pairs yet. Add your first pair to start learning.",
     "searchPlaceholder": "Search pair",
     "add": "Add"
+  },
+  "admin": {
+    "nav": {
+      "aiAnalysis": "AI analysis",
+      "languages": "Languages"
+    },
+    "common": {
+      "adminPanel": "Admin panel",
+      "accessDenied": "Access denied",
+      "accessDeniedDescription": "This page is available only to users with the ADMIN role.",
+      "refresh": "Refresh"
+    },
+    "aiAnalysis": {
+      "title": "AI text analysis",
+      "description": "Create a task for automated lexical text analysis. The worker will process it in the background.",
+      "refreshJobs": "Refresh jobs",
+      "materialTitle": "Material title",
+      "materialTitlePlaceholder": "For example: The Student Project",
+      "level": "Level",
+      "sourceLanguage": "Source language",
+      "targetLanguages": "Target languages",
+      "noLanguagePairs": "No available language pairs",
+      "chooseSourceFirst": "Choose the source language first.",
+      "noTargetPairs": "There are no available language pairs for the selected source language.",
+      "originalText": "Original text",
+      "originalTextPlaceholder": "Paste text for AI analysis...",
+      "submit": "Send for AI analysis",
+      "creatingJobs": "Creating jobs...",
+      "queue": "Queue",
+      "recentJobs": "Recent jobs",
+      "noJobs": "No jobs have been created yet.",
+      "attempts": "attempts",
+      "next": "next",
+      "completed": "completed",
+      "showResultJson": "Show result_json",
+      "jobsCreated": "Created jobs: {{count}}",
+      "errors": {
+        "loadFailed": "Failed to load admin panel data",
+        "sourceLanguageRequired": "Choose the source language",
+        "targetLanguageRequired": "Choose at least one target language",
+        "createFailed": "Failed to create AI analysis jobs"
+      }
+    },
+    "languages": {
+      "title": "Languages and language pairs",
+      "description": "Manage languages and translation directions used for AI text analysis tasks.",
+      "language": "Language",
+      "languagePair": "Language pair",
+      "addLanguage": "Add language",
+      "addPair": "Add language pair",
+      "languageName": "Language name",
+      "languageNamePlaceholder": "For example: German",
+      "languageCode": "Language code",
+      "languageCodePlaceholder": "For example: de",
+      "sourceLanguage": "Source language",
+      "targetLanguage": "Target language",
+      "addLanguageButton": "Add language",
+      "addPairButton": "Add language pair",
+      "adding": "Adding...",
+      "addLanguagesFirst": "Add languages first",
+      "noAvailableLanguages": "No available languages",
+      "directory": "Directory",
+      "directions": "Directions",
+      "addedLanguages": "Added languages",
+      "addedPairs": "Added language pairs",
+      "name": "Name",
+      "code": "Code",
+      "noLanguages": "No languages have been added yet.",
+      "noPairs": "No language pairs have been added yet.",
+      "languageCreated": "Language added successfully",
+      "pairCreated": "Language pair added successfully",
+      "errors": {
+        "loadFailed": "Failed to load languages and language pairs",
+        "createLanguageFailed": "Failed to create language",
+        "createPairFailed": "Failed to create language pair",
+        "chooseLanguages": "Choose source and target languages",
+        "sameLanguages": "Source and target languages must be different"
+      }
+    }
   }
 }
