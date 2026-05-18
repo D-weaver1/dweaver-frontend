@@ -5,6 +5,7 @@ import { LoginPage } from "@/pages/login/LoginPage";
 import { RegisterPage } from "@/pages/register/RegisterPage";
 import { MaterialsPage } from "@/pages/materials/MaterialsPage";
 import { LanguagePairSettingsPage } from "@/features/user-language-pairs/ui/LanguagePairSettingsPage";
+import { AdminAiAnalysisPage } from "@/pages/admin-ai-analysis/AdminAiAnalysisPage";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: "materials",
         element: <MaterialsPage />,
+      },
+      {
+        path: "admin/ai-analysis",
+        element: <AdminAiAnalysisPage />,
       },
       {
         path: "login",
