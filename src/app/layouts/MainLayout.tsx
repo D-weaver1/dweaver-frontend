@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "@/features/auth/model/useAuth";
 import { LanguagePairSelect } from "@/features/user-language-pairs/ui/LanguagePairSelect";
+import { useTranslation } from "react-i18next";
 
 export function MainLayout() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -11,7 +12,7 @@ export function MainLayout() {
     user?.name?.trim().charAt(0).toUpperCase() ||
     user?.email?.charAt(0).toUpperCase() ||
     "U";
-
+  const { t } = useTranslation();
   async function handleLogout() {
     setIsProfileMenuOpen(false);
     await logout();
@@ -63,7 +64,7 @@ export function MainLayout() {
                   type="button"
                   className="user-avatar-button"
                   onClick={toggleProfileMenu}
-                  aria-label="Відкрити меню профілю"
+                  aria-label={t("profile.openProfileMenu")}
                   aria-expanded={isProfileMenuOpen}
                 >
                   {avatarLetter}
@@ -73,7 +74,7 @@ export function MainLayout() {
                   <div className="profile-dropdown">
                     <div className="profile-dropdown-info">
                       <div className="profile-dropdown-name">
-                        {user?.name || "Користувач"}
+                        {user?.name || t("profile.user")}
                       </div>
 
                       {user?.email && (
@@ -82,15 +83,17 @@ export function MainLayout() {
                         </div>
                       )}
                     </div>
+
                     <button type="button" className="profile-dropdown-button">
-                      Налаштування
+                      {t("profile.settings")}
                     </button>
+
                     <button
                       type="button"
                       className="profile-dropdown-button"
                       onClick={handleLogout}
                     >
-                      Вийти
+                      {t("auth.logout")}
                     </button>
                   </div>
                 )}
@@ -98,8 +101,8 @@ export function MainLayout() {
             </>
           ) : (
             <>
-              <Link to="/login">Вхід</Link>
-              <Link to="/register">Реєстрація</Link>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Registration</Link>
             </>
           )}
         </nav>

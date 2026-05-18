@@ -2,12 +2,14 @@ import { useState } from "react";
 import { languagePairApi } from "../api/languagePairApi";
 import type { LanguagePair } from "../model/languagePair.types";
 import { useLanguagePair } from "../model/useLanguagePair";
+import { useTranslation } from "react-i18next";
 
 function formatLanguagePair(languagePair: LanguagePair) {
   return `${languagePair.sourceLanguage.code.toUpperCase()} → ${languagePair.targetLanguage.code.toUpperCase()}`;
 }
 
 export function LanguagePairSelect() {
+  const { t } = useTranslation();
   const {
     currentLanguagePair,
     selectedLanguagePairs,
@@ -73,13 +75,13 @@ export function LanguagePairSelect() {
       >
         {currentLanguagePair
           ? formatLanguagePair(currentLanguagePair)
-          : "Оберіть пару"}
+          : t("languagePair.choosePair")}
       </button>
 
       {isOpen && (
         <div className="language-pair-select__dropdown">
           <div className="language-pair-select__section-title">
-            Ваші мовні пари
+            {t("languagePair.yourPairs")}
           </div>
 
           {selectedLanguagePairs.length > 0 ? (
@@ -93,13 +95,15 @@ export function LanguagePairSelect() {
                 {formatLanguagePair(item.languagePair)}
 
                 {currentLanguagePair?.id === item.languagePair.id && (
-                  <span className="language-pair-select__current">Поточна</span>
+                  <span className="language-pair-select__current">
+                    {t("languagePair.current")}
+                  </span>
                 )}
               </button>
             ))
           ) : (
             <div className="language-pair-select__empty">
-              У вас ще немає мовних пар
+              {t("languagePair.noPairs")}
             </div>
           )}
 
@@ -108,18 +112,18 @@ export function LanguagePairSelect() {
             className="language-pair-select__add-button"
             onClick={handleOpenAddMode}
           >
-            + Додати мовну пару
+            {t("languagePair.addPair")}
           </button>
 
           {isAdding && (
             <div className="language-pair-select__add-list">
               <div className="language-pair-select__section-title">
-                Доступні мовні пари
+                {t("languagePair.availablePairs")}
               </div>
 
               {isAvailableLoading ? (
                 <div className="language-pair-select__empty">
-                  Завантаження...
+                  {t("common.loading")}
                 </div>
               ) : availablePairs.length > 0 ? (
                 availablePairs.map((pair) => (
@@ -134,7 +138,7 @@ export function LanguagePairSelect() {
                 ))
               ) : (
                 <div className="language-pair-select__empty">
-                  Немає доступних мовних пар
+                  {t("languagePair.noAvailablePairs")}
                 </div>
               )}
             </div>

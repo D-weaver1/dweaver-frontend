@@ -22,7 +22,7 @@ export function LoginPage() {
       await login({ email, password });
       navigate("/");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Помилка входу");
+      setError(error instanceof Error ? error.message : "Login failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -31,7 +31,7 @@ export function LoginPage() {
   return (
     <section className="auth-page">
       <div className="auth-card">
-        <h1>Вхід</h1>
+        <h1>Login</h1>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label>
@@ -45,7 +45,7 @@ export function LoginPage() {
           </label>
 
           <label>
-            Пароль
+            Password
             <input
               type="password"
               value={password}
@@ -57,12 +57,12 @@ export function LoginPage() {
           {error && <p className="auth-error">{error}</p>}
 
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Вхід..." : "Увійти"}
+            {isSubmitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
         <p className="auth-link">
-          Немає акаунта? <Link to="/register">Зареєструватися</Link>
+          Don&apos;t have an account? <Link to="/register">Create account</Link>
         </p>
       </div>
     </section>
