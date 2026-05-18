@@ -292,10 +292,6 @@ export function LanguagePairSettingsPage() {
     <section className="language-pair-settings">
       <div className="language-pair-settings__header">
         <div>
-          <p className="language-pair-settings__eyebrow">
-            {t("profile.settings")}
-          </p>
-
           <h1 className="language-pair-settings__title">
             {t("languagePair.settingsTitle")}
           </h1>
