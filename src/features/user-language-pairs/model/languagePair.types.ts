@@ -15,7 +15,7 @@ export type UserLanguagePairStatus = "ACTIVE" | "HIDDEN" | "active" | "hidden";
 export type UserLanguagePair = {
   id: string;
   status: UserLanguagePairStatus;
-  lastUsed: string;
+  lastUsed: string | null;
   languagePair: LanguagePair;
 };
 
