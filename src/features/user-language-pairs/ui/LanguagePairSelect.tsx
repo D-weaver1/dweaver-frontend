@@ -1,51 +1,30 @@
 import { useState } from "react";
-import { languagePairApi } from "../api/languagePairApi";
+import { Link } from "react-router-dom";
 import type { LanguagePair } from "../model/languagePair.types";
 import { useLanguagePair } from "../model/useLanguagePair";
+import { useTranslation } from "react-i18next";
 
 function formatLanguagePair(languagePair: LanguagePair) {
   return `${languagePair.sourceLanguage.code.toUpperCase()} → ${languagePair.targetLanguage.code.toUpperCase()}`;
 }
 
 export function LanguagePairSelect() {
+  const { t } = useTranslation();
   const {
     currentLanguagePair,
     selectedLanguagePairs,
     selectLanguagePair,
-    addLanguagePair,
     isLoading,
   } = useLanguagePair();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
-  const [availablePairs, setAvailablePairs] = useState<LanguagePair[]>([]);
-  const [isAvailableLoading, setIsAvailableLoading] = useState(false);
 
   function closeDropdown() {
     setIsOpen(false);
-    setIsAdding(false);
   }
 
   function toggleDropdown() {
-    setIsOpen((prev) => {
-      if (prev) {
-        setIsAdding(false);
-      }
-
-      return !prev;
-    });
-  }
-
-  async function handleOpenAddMode() {
-    setIsAdding(true);
-    setIsAvailableLoading(true);
-
-    try {
-      const result = await languagePairApi.getAvailableLanguagePairs();
-      setAvailablePairs(result);
-    } finally {
-      setIsAvailableLoading(false);
-    }
+    setIsOpen((prev) => !prev);
   }
 
   async function handleSelect(languagePairId: string) {
@@ -58,11 +37,6 @@ export function LanguagePairSelect() {
     closeDropdown();
   }
 
-  async function handleAdd(languagePairId: string) {
-    await addLanguagePair(languagePairId);
-    closeDropdown();
-  }
-
   return (
     <div className="language-pair-select">
       <button
@@ -71,15 +45,21 @@ export function LanguagePairSelect() {
         onClick={toggleDropdown}
         disabled={isLoading}
       >
-        {currentLanguagePair
-          ? formatLanguagePair(currentLanguagePair)
-          : "Оберіть пару"}
+        <span className="language-pair-select__button-label">
+          {currentLanguagePair
+            ? formatLanguagePair(currentLanguagePair)
+            : t("languagePair.choosePair")}
+        </span>
+
+        <span className="language-pair-select__chevron" aria-hidden="true">
+          ▾
+        </span>
       </button>
 
       {isOpen && (
         <div className="language-pair-select__dropdown">
           <div className="language-pair-select__section-title">
-            Ваші мовні пари
+            {t("languagePair.yourPairs")}
           </div>
 
           {selectedLanguagePairs.length > 0 ? (
@@ -93,52 +73,27 @@ export function LanguagePairSelect() {
                 {formatLanguagePair(item.languagePair)}
 
                 {currentLanguagePair?.id === item.languagePair.id && (
-                  <span className="language-pair-select__current">Поточна</span>
+                  <span className="language-pair-select__current">
+                    {t("languagePair.current")}
+                  </span>
                 )}
               </button>
             ))
           ) : (
             <div className="language-pair-select__empty">
-              У вас ще немає мовних пар
+              {t("languagePair.noPairs")}
             </div>
           )}
 
-          <button
-            type="button"
-            className="language-pair-select__add-button"
-            onClick={handleOpenAddMode}
+          <div className="language-pair-select__divider" />
+
+          <Link
+            to="/settings/language-pairs"
+            className="language-pair-select__manage-link"
+            onClick={closeDropdown}
           >
-            + Додати мовну пару
-          </button>
-
-          {isAdding && (
-            <div className="language-pair-select__add-list">
-              <div className="language-pair-select__section-title">
-                Доступні мовні пари
-              </div>
-
-              {isAvailableLoading ? (
-                <div className="language-pair-select__empty">
-                  Завантаження...
-                </div>
-              ) : availablePairs.length > 0 ? (
-                availablePairs.map((pair) => (
-                  <button
-                    key={pair.id}
-                    type="button"
-                    className="language-pair-select__item"
-                    onClick={() => handleAdd(pair.id)}
-                  >
-                    {formatLanguagePair(pair)}
-                  </button>
-                ))
-              ) : (
-                <div className="language-pair-select__empty">
-                  Немає доступних мовних пар
-                </div>
-              )}
-            </div>
-          )}
+            {t("languagePair.manageLanguagePairs")}
+          </Link>
         </div>
       )}
     </div>

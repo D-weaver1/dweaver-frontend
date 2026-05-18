@@ -1,0 +1,62 @@
+{
+  "auth": {
+    "logout": "Log out"
+  },
+  "profile": {
+    "user": "User",
+    "settings": "Language pairs",
+    "openProfileMenu": "Open profile menu"
+  },
+  "home": {
+    "title": "Home page"
+  },
+  "nav": {
+    "startLearning": "Start learning"
+  },
+  "materials": {
+    "title": "Learning materials",
+    "description": "Choose a material for adaptive reading. The list is generated for the current language pair.",
+    "authRequired": "Sign in to view learning materials.",
+    "choosePairRequired": "Choose a language pair before learning.",
+    "searchPlaceholder": "Search by title or text...",
+    "loading": "Loading materials...",
+    "loadError": "Failed to load materials",
+    "notFound": "No materials found"
+  },
+  "levels": {
+    "a1a2": "A1-A2",
+    "b1b2": "B1-B2",
+    "c1c2": "C1-C2"
+  },
+  "common": {
+    "loading": "Loading...",
+    "close": "Close"
+  },
+  "languagePair": {
+    "choosePair": "Choose pair",
+    "yourPairs": "Your language pairs",
+    "current": "Current",
+    "noPairs": "You do not have any language pairs yet",
+    "addPair": "+ Add language pair",
+    "availablePairs": "Available language pairs",
+    "noAvailablePairs": "No available language pairs",
+    "manageLanguagePairs": "Manage language pairs",
+    "settingsTitle": "Language pairs",
+    "settingsDescription": "Manage your learning language pairs: add new ones, switch the current pair, hide pairs, or delete them completely.",
+    "selectedPairs": "Selected language pairs",
+    "addNewPair": "+ Add language pair",
+    "availablePairsDescription": "Choose a language pair you want to add to your learning.",
+    "addedPairsHint": "Only active language pairs available for quick switching are shown here.",
+    "select": "Select",
+    "actions": "Actions",
+    "hide": "Hide",
+    "delete": "Delete",
+    "linkedPairsHint": "All language pairs linked to your account are shown here, including hidden ones.",
+    "activate": "Activate",
+    "statusActive": "Active",
+    "statusHidden": "Hidden",
+    "noSelectedPairsDescription": "You do not have active language pairs yet. Add your first pair to start learning.",
+    "searchPlaceholder": "Search pair",
+    "add": "Add"
+  }
+}

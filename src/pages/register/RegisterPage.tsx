@@ -23,7 +23,7 @@ export function RegisterPage() {
       await register({ name, email, password });
       navigate("/login");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Помилка реєстрації");
+      setError(error instanceof Error ? error.message : "Registration failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -32,11 +32,11 @@ export function RegisterPage() {
   return (
     <section className="auth-page">
       <div className="auth-card">
-        <h1>Реєстрація</h1>
+        <h1>Registration</h1>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label>
-            Імʼя
+            Name
             <input
               type="text"
               value={name}
@@ -56,7 +56,7 @@ export function RegisterPage() {
           </label>
 
           <label>
-            Пароль
+            Password
             <input
               type="password"
               value={password}
@@ -69,12 +69,12 @@ export function RegisterPage() {
           {error && <p className="auth-error">{error}</p>}
 
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Реєстрація..." : "Зареєструватися"}
+            {isSubmitting ? "Creating account..." : "Create account"}
           </button>
         </form>
 
         <p className="auth-link">
-          Вже є акаунт? <Link to="/login">Увійти</Link>
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </div>
     </section>
