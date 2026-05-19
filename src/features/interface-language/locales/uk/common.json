@@ -21,7 +21,8 @@
     "searchPlaceholder": "Пошук за назвою або текстом...",
     "loading": "Завантаження матеріалів...",
     "loadError": "Не вдалося завантажити матеріали",
-    "notFound": "Матеріали не знайдено"
+    "notFound": "Матеріали не знайдено",
+    "progress": "{{completed}}/{{total}}"
   },
   "levels": {
     "a1a2": "A1-A2",
@@ -99,6 +100,27 @@
         "title": "Інтенсивне занурення",
         "description": "Максимальне занурення з великою кількістю перекладених слів."
       }
+    },
+    "actions": {
+      "backToLevels": "Назад до рівнів",
+      "finishReading": "Завершити читання",
+      "completed": "Пройдено",
+      "continueToLevels": "Продовжити",
+      "continueLocked": "Завершіть читання, щоб продовжити",
+      "backToMaterials": "Назад до матеріалів"
+    },
+    "statuses": {
+      "not_started": "Не розпочато",
+      "in_progress": "У процесі",
+      "completed": "Пройдено"
+    },
+    "translatedWords": {
+      "title": "Слова з цього рівня",
+      "description": "Повторіть перекладені слова з цього тексту.",
+      "showTranslation": "Показати переклад",
+      "hideTranslation": "Сховати переклад",
+      "listen": "Прослухати",
+      "addToDictionary": "Додати в словник"
     }
   }
 }

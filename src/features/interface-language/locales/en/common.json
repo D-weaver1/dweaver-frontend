@@ -21,7 +21,8 @@
     "searchPlaceholder": "Search by title or text...",
     "loading": "Loading materials...",
     "loadError": "Failed to load materials",
-    "notFound": "No materials found"
+    "notFound": "No materials found",
+    "progress": "{{completed}}/{{total}}"
   },
   "levels": {
     "a1a2": "A1-A2",
@@ -99,6 +100,27 @@
         "title": "Intensive immersion",
         "description": "Maximum immersion with many translated words."
       }
+    },
+    "actions": {
+      "backToLevels": "Back to levels",
+      "finishReading": "Finish reading",
+      "completed": "Completed",
+      "continueToLevels": "Continue",
+      "continueLocked": "Finish reading to continue",
+      "backToMaterials": "Back to materials"
+    },
+    "statuses": {
+      "not_started": "Not started",
+      "in_progress": "In progress",
+      "completed": "Completed"
+    },
+    "translatedWords": {
+      "title": "Words from this level",
+      "description": "Review the translated words from this text.",
+      "showTranslation": "Show translation",
+      "hideTranslation": "Hide translation",
+      "listen": "Listen",
+      "addToDictionary": "Add to dictionary"
     }
   }
 }

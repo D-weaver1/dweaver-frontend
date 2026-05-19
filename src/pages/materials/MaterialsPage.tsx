@@ -5,6 +5,8 @@ import type { MaterialCard } from "@/features/materials/model/material.types";
 import { useAuth } from "@/features/auth/model/useAuth";
 import { useLanguagePair } from "@/features/user-language-pairs/model/useLanguagePair";
 import { useTranslation } from "react-i18next";
+import { materialReadingApi } from "@/features/material-reading/api/materialReadingApi";
+import type { MaterialProgressSummary } from "@/features/material-reading/model/materialReading.types";
 
 const LEVEL_FILTERS = [
   { labelKey: "levels.a1a2", value: "A1-A2" },
@@ -18,12 +20,17 @@ export function MaterialsPage() {
     useLanguagePair();
 
   const [materials, setMaterials] = useState<MaterialCard[]>([]);
+  const [progressByMaterialId, setProgressByMaterialId] = useState<
+    Record<string, MaterialProgressSummary>
+  >({});
   const [search, setSearch] = useState("");
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const loadMaterials = useCallback(async () => {
     if (isAuthLoading || isLanguagePairLoading) {
       return;
@@ -31,6 +38,7 @@ export function MaterialsPage() {
 
     if (!isAuthenticated || !currentLanguagePair) {
       setMaterials([]);
+      setProgressByMaterialId({});
       setIsLoading(false);
       return;
     }
@@ -44,11 +52,38 @@ export function MaterialsPage() {
         levels: selectedLevels,
       });
 
-      setMaterials(response.materials);
+      const loadedMaterials = response.materials;
+
+      setMaterials(loadedMaterials);
+
+      if (loadedMaterials.length === 0) {
+        setProgressByMaterialId({});
+        return;
+      }
+
+      try {
+        const progressResponse =
+          await materialReadingApi.getMaterialsProgressSummary(
+            loadedMaterials.map((material) => material.id),
+          );
+
+        const nextProgressByMaterialId = Object.fromEntries(
+          progressResponse.summaries.map((summary) => [
+            summary.materialId,
+            summary,
+          ]),
+        );
+
+        setProgressByMaterialId(nextProgressByMaterialId);
+      } catch (progressError) {
+        console.error(progressError);
+        setProgressByMaterialId({});
+      }
     } catch (error) {
       console.error(error);
       setError(t("materials.loadError"));
       setMaterials([]);
+      setProgressByMaterialId({});
     } finally {
       setIsLoading(false);
     }
@@ -58,12 +93,13 @@ export function MaterialsPage() {
     isAuthenticated,
     isAuthLoading,
     isLanguagePairLoading,
-    currentLanguagePair?.id,
+    currentLanguagePair,
+    t,
   ]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      loadMaterials();
+      void loadMaterials();
     }, 300);
 
     return () => {
@@ -149,21 +185,38 @@ export function MaterialsPage() {
         <p className="materials-empty">{t("materials.notFound")}</p>
       ) : (
         <div className="materials-grid">
-          {materials.map((material) => (
-            <button
-              key={material.id}
-              type="button"
-              className="material-card"
-              onClick={() => navigate(`/materials/${material.id}`)}
-            >
-              <div className="material-card-header">
-                <span className="material-level">{material.languageLevel}</span>
-              </div>
+          {materials.map((material) => {
+            const progress = progressByMaterialId[material.id];
 
-              <h2>{material.title}</h2>
-              <p>{material.preview}</p>
-            </button>
-          ))}
+            return (
+              <button
+                key={material.id}
+                type="button"
+                className="material-card"
+                onClick={() => navigate(`/materials/${material.id}`)}
+              >
+                <div className="material-card-header">
+                  <span className="material-level">
+                    {material.languageLevel}
+                  </span>
+
+                  {progress && (
+                    <span
+                      className={`material-card-progress material-card-progress-${progress.status}`}
+                    >
+                      {t("materials.progress", {
+                        completed: progress.completedLevelsCount,
+                        total: progress.totalLevelsCount,
+                      })}
+                    </span>
+                  )}
+                </div>
+
+                <h2>{material.title}</h2>
+                <p>{material.preview}</p>
+              </button>
+            );
+          })}
         </div>
       )}
     </section>
