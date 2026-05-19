@@ -174,6 +174,15 @@ export function AdminAiAnalysisPage() {
     });
   }
 
+  const isSubmitDisabled =
+    isSubmitting ||
+    !title.trim() ||
+    !languageLevel ||
+    !sourceLanguage ||
+    targetLanguages.length === 0 ||
+    !originalText.trim() ||
+    targetLanguageOptions.length === 0;
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -357,7 +366,7 @@ export function AdminAiAnalysisPage() {
         <button
           type="submit"
           className="primary-button"
-          disabled={isSubmitting || targetLanguageOptions.length === 0}
+          disabled={isSubmitDisabled}
         >
           {isSubmitting
             ? t("admin.aiAnalysis.creatingJobs")
