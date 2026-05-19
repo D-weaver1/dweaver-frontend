@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { LanguagePair } from "../model/languagePair.types";
 import { useLanguagePair } from "../model/useLanguagePair";
@@ -10,6 +10,7 @@ function formatLanguagePair(languagePair: LanguagePair) {
 
 export function LanguagePairSelect() {
   const { t } = useTranslation();
+
   const {
     currentLanguagePair,
     selectedLanguagePairs,
@@ -18,6 +19,7 @@ export function LanguagePairSelect() {
   } = useLanguagePair();
 
   const [isOpen, setIsOpen] = useState(false);
+  const languagePairSelectRef = useRef<HTMLDivElement | null>(null);
 
   function closeDropdown() {
     setIsOpen(false);
@@ -37,13 +39,43 @@ export function LanguagePairSelect() {
     closeDropdown();
   }
 
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        languagePairSelectRef.current &&
+        !languagePairSelectRef.current.contains(event.target as Node)
+      ) {
+        closeDropdown();
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeDropdown();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="language-pair-select">
+    <div className="language-pair-select" ref={languagePairSelectRef}>
       <button
         type="button"
         className="language-pair-select__button"
         onClick={toggleDropdown}
         disabled={isLoading}
+        aria-expanded={isOpen}
       >
         <span className="language-pair-select__button-label">
           {currentLanguagePair
