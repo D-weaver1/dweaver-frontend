@@ -1,6 +1,19 @@
+export type MaterialLevelProgressStatus =
+  | "not_started"
+  | "in_progress"
+  | "completed";
+
 export type MaterialLevelOption = {
   id: string;
   factor: number;
+  status: MaterialLevelProgressStatus;
+};
+
+export type TranslatedWord = {
+  wordId: string;
+  materialWordId: string;
+  sourceText: string;
+  targetText: string;
 };
 
 type ReadingUnitBase = {
@@ -29,5 +42,18 @@ export type MaterialReading = {
   levelId: string;
   factor: number;
   text: string;
+  progressStatus: MaterialLevelProgressStatus;
   units: ReadingUnit[];
+  translatedWords: TranslatedWord[];
+};
+
+export type MaterialProgressSummary = {
+  materialId: string;
+  completedLevelsCount: number;
+  totalLevelsCount: number;
+  status: MaterialLevelProgressStatus;
+};
+
+export type MaterialsProgressSummaryResponse = {
+  summaries: MaterialProgressSummary[];
 };
