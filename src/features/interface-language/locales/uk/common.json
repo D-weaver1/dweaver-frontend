@@ -121,6 +121,8 @@
       "hideTranslation": "Сховати переклад",
       "listen": "Прослухати",
       "addToDictionary": "Додати в словник"
+    }
+  },
   "admin": {
     "nav": {
       "aiAnalysis": "AI-обробка",

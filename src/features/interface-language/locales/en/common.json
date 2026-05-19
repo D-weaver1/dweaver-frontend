@@ -121,6 +121,8 @@
       "hideTranslation": "Hide translation",
       "listen": "Listen",
       "addToDictionary": "Add to dictionary"
+    }
+  },
   "admin": {
     "nav": {
       "aiAnalysis": "AI analysis",
