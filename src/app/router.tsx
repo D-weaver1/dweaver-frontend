@@ -7,6 +7,8 @@ import { MaterialsPage } from "@/pages/materials/MaterialsPage";
 import { LanguagePairSettingsPage } from "@/features/user-language-pairs/ui/LanguagePairSettingsPage";
 import { MaterialLevelSelectPage } from "@/features/material-reading/ui/MaterialLevelSelectPage";
 import { MaterialReadingPage } from "@/features/material-reading/ui/MaterialReadingPage";
+import { AdminAiAnalysisPage } from "@/pages/admin-ai-analysis/AdminAiAnalysisPage";
+import { AdminLanguagesPage } from "@/pages/admin-languages/AdminLanguagesPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
       {
         path: "materials",
         element: <MaterialsPage />,
+      },
+      {
+        path: "admin/ai-analysis",
+        element: <AdminAiAnalysisPage />,
+      },
+      {
+        path: "admin/languages",
+        element: <AdminLanguagesPage />,
       },
       {
         path: "login",

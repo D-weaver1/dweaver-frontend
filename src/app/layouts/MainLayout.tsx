@@ -57,6 +57,14 @@ export function MainLayout() {
         <nav className="app-nav">
           {isLoading ? null : isAuthenticated ? (
             <>
+              {user?.role === "admin" && (
+                <>
+                  <Link to="/admin/ai-analysis">
+                    {t("admin.nav.aiAnalysis")}
+                  </Link>
+                  <Link to="/admin/languages">{t("admin.nav.languages")}</Link>
+                </>
+              )}
               <LanguagePairSelect />
 
               <div className="profile-menu" ref={profileMenuRef}>
