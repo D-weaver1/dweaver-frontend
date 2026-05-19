@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { materialReadingApi } from "../api/materialReadingApi";
 import { MATERIAL_LEVEL_TRANSLATION_KEYS } from "../model/materialReading.constants";
 import type {
+  MaterialLevelProgressStatus,
   MaterialReading,
   TranslatedReadingUnit,
 } from "../model/materialReading.types";
 import { ReadingText } from "./ReadingText";
+import { TranslatedWordsReview } from "./TranslatedWordsReview";
 import { WordPopup } from "./WordPopup";
 
 type WordPopupPosition = {
@@ -21,6 +23,7 @@ export function MaterialReadingPage() {
     levelId: string;
   }>();
 
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [reading, setReading] = useState<MaterialReading | null>(null);
@@ -29,8 +32,13 @@ export function MaterialReadingPage() {
   const [popupPosition, setPopupPosition] = useState<WordPopupPosition | null>(
     null,
   );
+  const [progressStatus, setProgressStatus] =
+    useState<MaterialLevelProgressStatus>("not_started");
   const [isLoading, setIsLoading] = useState(Boolean(materialId && levelId));
+  const [isCompleting, setIsCompleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const isCompleted = progressStatus === "completed";
 
   useEffect(() => {
     if (!materialId || !levelId) {
@@ -43,6 +51,8 @@ export function MaterialReadingPage() {
 
     async function loadReading() {
       try {
+        await materialReadingApi.startLevel(currentMaterialId, currentLevelId);
+
         const data = await materialReadingApi.getReading(
           currentMaterialId,
           currentLevelId,
@@ -53,6 +63,7 @@ export function MaterialReadingPage() {
         }
 
         setReading(data);
+        setProgressStatus(data.progressStatus);
         setSelectedUnit(null);
         setPopupPosition(null);
         setErrorMessage("");
@@ -76,6 +87,33 @@ export function MaterialReadingPage() {
     };
   }, [materialId, levelId, t]);
 
+  async function handleCompleteReading() {
+    if (!materialId || !levelId) {
+      return;
+    }
+
+    try {
+      setIsCompleting(true);
+
+      const result = await materialReadingApi.completeLevel(
+        materialId,
+        levelId,
+      );
+
+      setProgressStatus(result.status);
+      setReading((current) =>
+        current
+          ? {
+              ...current,
+              progressStatus: result.status,
+            }
+          : current,
+      );
+    } finally {
+      setIsCompleting(false);
+    }
+  }
+
   function handleTranslatedUnitClick(
     unit: TranslatedReadingUnit,
     position: WordPopupPosition,
@@ -87,6 +125,14 @@ export function MaterialReadingPage() {
   function closePopup() {
     setSelectedUnit(null);
     setPopupPosition(null);
+  }
+
+  function goBackToLevels() {
+    if (!materialId) {
+      return;
+    }
+
+    navigate(`/materials/${materialId}`);
   }
 
   if (!materialId || !levelId) {
@@ -123,12 +169,28 @@ export function MaterialReadingPage() {
 
   return (
     <main className="material-reading-page">
+      <button
+        type="button"
+        className="material-reading-back-button"
+        onClick={goBackToLevels}
+      >
+        ← {t("materialReading.actions.backToLevels")}
+      </button>
+
       <div className="material-reading-header">
         <div className="material-reading-label">
           {t("materialReading.reading.levelLabel")}
         </div>
 
-        <h1 className="material-reading-title">{levelTitle}</h1>
+        <div className="material-reading-title-row">
+          <h1 className="material-reading-title">{levelTitle}</h1>
+
+          <span
+            className={`material-reading-status material-reading-status-${progressStatus}`}
+          >
+            {t(`materialReading.statuses.${progressStatus}`)}
+          </span>
+        </div>
       </div>
 
       <section className="material-reading-text-card">
@@ -137,6 +199,35 @@ export function MaterialReadingPage() {
           onTranslatedUnitClick={handleTranslatedUnitClick}
         />
       </section>
+
+      <div className="material-reading-actions">
+        {!isCompleted && (
+          <button
+            type="button"
+            className="material-reading-complete-button"
+            onClick={handleCompleteReading}
+            disabled={isCompleting}
+          >
+            {t("materialReading.actions.finishReading")}
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="material-reading-next-button"
+          onClick={goBackToLevels}
+          disabled={!isCompleted}
+          title={
+            isCompleted
+              ? undefined
+              : t("materialReading.actions.continueLocked")
+          }
+        >
+          {t("materialReading.actions.continueToLevels")}
+        </button>
+      </div>
+
+      {isCompleted && <TranslatedWordsReview words={reading.translatedWords} />}
 
       {selectedUnit && popupPosition && (
         <WordPopup

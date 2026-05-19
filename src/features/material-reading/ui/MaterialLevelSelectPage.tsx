@@ -54,7 +54,7 @@ export function MaterialLevelSelectPage() {
 
   if (!materialId) {
     return (
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="material-reading-message">
         {t("materialReading.levelSelect.notFound")}
       </main>
     );
@@ -62,27 +62,38 @@ export function MaterialLevelSelectPage() {
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="material-reading-message">
         {t("materialReading.levelSelect.loading")}
       </main>
     );
   }
 
   if (errorMessage) {
-    return <main className="mx-auto max-w-4xl px-4 py-8">{errorMessage}</main>;
+    return <main className="material-reading-message">{errorMessage}</main>;
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-semibold">
-        {t("materialReading.levelSelect.title")}
-      </h1>
+    <main className="material-reading-page">
+      <button
+        type="button"
+        className="material-reading-back-button"
+        onClick={() => navigate("/materials")}
+      >
+        ← {t("materialReading.actions.backToMaterials")}
+      </button>
+      <header className="material-level-select-header">
+        <p className="material-level-select-kicker">d-weaver</p>
 
-      <p className="mt-2 text-gray-600">
-        {t("materialReading.levelSelect.description")}
-      </p>
+        <h1 className="material-reading-page-title">
+          {t("materialReading.levelSelect.title")}
+        </h1>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <p className="material-reading-page-description">
+          {t("materialReading.levelSelect.description")}
+        </p>
+      </header>
+
+      <div className="material-level-grid">
         {levels.map((level) => {
           const translationKeys = MATERIAL_LEVEL_TRANSLATION_KEYS[level.factor];
 
@@ -99,18 +110,26 @@ export function MaterialLevelSelectPage() {
               onClick={() =>
                 navigate(`/materials/${materialId}/levels/${level.id}`)
               }
-              className="rounded-2xl border border-gray-200 bg-white p-5 text-left shadow-sm transition hover:border-gray-400 hover:shadow-md"
+              className="material-level-card"
             >
-              <div className="text-lg font-semibold">{title}</div>
+              <div className="material-level-card-top">
+                <div className="material-level-card-badge">{level.factor}%</div>
+              </div>
 
-              <div className="mt-1 text-sm text-gray-500">
+              <h2 className="material-level-card-title">{title}</h2>
+
+              <p className="material-level-card-percent">
                 {t("materialReading.levelSelect.translatedPercent", {
                   factor: level.factor,
                 })}
-              </div>
-
+              </p>
+              <span
+                className={`material-level-status material-level-status-${level.status}`}
+              >
+                {t(`materialReading.statuses.${level.status}`)}
+              </span>
               {translationKeys && (
-                <p className="mt-3 text-sm text-gray-600">
+                <p className="material-level-card-description">
                   {t(translationKeys.description)}
                 </p>
               )}
