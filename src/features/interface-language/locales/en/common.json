@@ -193,12 +193,14 @@
       "noPairs": "No language pairs have been added yet.",
       "languageCreated": "Language added successfully",
       "pairCreated": "Language pair added successfully",
+      "noAvailableSourceLanguages": "There are no languages for which a new language pair can be created",
       "errors": {
         "loadFailed": "Failed to load languages and language pairs",
         "createLanguageFailed": "Failed to create language",
         "createPairFailed": "Failed to create language pair",
         "chooseLanguages": "Choose source and target languages",
-        "sameLanguages": "Source and target languages must be different"
+        "sameLanguages": "Source and target languages must be different",
+        "pairAlreadyExists": "This language pair already exists"
       }
     }
   }

@@ -1403,7 +1403,8 @@ select {
 }
 
 .job-status--pending,
-.job-status--waiting_rate_limit {
+.job-status--waiting_rate_limit,
+.job-status--waiting_retry {
   background: #fff7e6;
   color: #936000;
 }

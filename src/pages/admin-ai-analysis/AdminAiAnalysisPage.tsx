@@ -20,6 +20,7 @@ const ACTIVE_JOB_STATUSES = new Set([
   "pending",
   "processing",
   "waiting_rate_limit",
+  "waiting_retry",
 ]);
 
 export function AdminAiAnalysisPage() {

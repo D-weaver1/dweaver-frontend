@@ -7,6 +7,82 @@ import type {
 } from "@/features/admin-languages/model/adminLanguages.types";
 import { useAuth } from "@/features/auth/model/useAuth";
 
+function getAvailableTargetLanguages(
+  sourceLanguageId: string,
+  languages: Language[],
+  languagePairs: LanguagePair[],
+) {
+  if (!sourceLanguageId) {
+    return [];
+  }
+
+  const existingTargetLanguageIds = new Set(
+    languagePairs
+      .filter((pair) => pair.sourceLanguage.id === sourceLanguageId)
+      .map((pair) => pair.targetLanguage.id),
+  );
+
+  return languages.filter(
+    (language) =>
+      language.id !== sourceLanguageId &&
+      !existingTargetLanguageIds.has(language.id),
+  );
+}
+
+function getFirstSourceLanguageWithAvailableTarget(
+  languages: Language[],
+  languagePairs: LanguagePair[],
+) {
+  return (
+    languages.find(
+      (language) =>
+        getAvailableTargetLanguages(language.id, languages, languagePairs)
+          .length > 0,
+    )?.id ?? ""
+  );
+}
+
+function resolveLanguagePairSelection(params: {
+  languages: Language[];
+  languagePairs: LanguagePair[];
+  currentSourceLanguageId: string;
+  currentTargetLanguageId: string;
+}) {
+  const {
+    languages,
+    languagePairs,
+    currentSourceLanguageId,
+    currentTargetLanguageId,
+  } = params;
+
+  const sourceLanguageExists = languages.some(
+    (language) => language.id === currentSourceLanguageId,
+  );
+
+  const sourceLanguageId = sourceLanguageExists
+    ? currentSourceLanguageId
+    : getFirstSourceLanguageWithAvailableTarget(languages, languagePairs);
+
+  const availableTargetLanguages = getAvailableTargetLanguages(
+    sourceLanguageId,
+    languages,
+    languagePairs,
+  );
+
+  const targetLanguageStillAvailable = availableTargetLanguages.some(
+    (language) => language.id === currentTargetLanguageId,
+  );
+
+  const targetLanguageId = targetLanguageStillAvailable
+    ? currentTargetLanguageId
+    : availableTargetLanguages[0]?.id ?? "";
+
+  return {
+    sourceLanguageId,
+    targetLanguageId,
+  };
+}
+
 export function AdminLanguagesPage() {
   const { t } = useTranslation();
   const { user, isLoading: isAuthLoading } = useAuth();
@@ -29,9 +105,24 @@ export function AdminLanguagesPage() {
 
   const isAdmin = user?.role === "admin";
 
+  const sourceLanguageOptions = useMemo(
+    () =>
+      languages.filter(
+        (language) =>
+          getAvailableTargetLanguages(language.id, languages, languagePairs)
+            .length > 0,
+      ),
+    [languages, languagePairs],
+  );
+
   const targetLanguageOptions = useMemo(
-    () => languages.filter((language) => language.id !== sourceLanguageId),
-    [languages, sourceLanguageId],
+    () =>
+      getAvailableTargetLanguages(
+        sourceLanguageId,
+        languages,
+        languagePairs,
+      ),
+    [languages, languagePairs, sourceLanguageId],
   );
 
   useEffect(() => {
@@ -50,24 +141,17 @@ export function AdminLanguagesPage() {
           return;
         }
 
+        const resolvedSelection = resolveLanguagePairSelection({
+          languages: languagesResponse,
+          languagePairs: languagePairsResponse,
+          currentSourceLanguageId: sourceLanguageId,
+          currentTargetLanguageId: targetLanguageId,
+        });
+
         setLanguages(languagesResponse);
         setLanguagePairs(languagePairsResponse);
-
-        setSourceLanguageId((current) => {
-          if (current) {
-            return current;
-          }
-
-          return languagesResponse[0]?.id ?? "";
-        });
-
-        setTargetLanguageId((current) => {
-          if (current) {
-            return current;
-          }
-
-          return languagesResponse[1]?.id ?? "";
-        });
+        setSourceLanguageId(resolvedSelection.sourceLanguageId);
+        setTargetLanguageId(resolvedSelection.targetLanguageId);
       })
       .catch((error) => {
         if (isCancelled) {
@@ -99,23 +183,29 @@ export function AdminLanguagesPage() {
       adminLanguagesApi.getLanguagePairs(),
     ]);
 
+    const resolvedSelection = resolveLanguagePairSelection({
+      languages: languagesResponse,
+      languagePairs: languagePairsResponse,
+      currentSourceLanguageId: sourceLanguageId,
+      currentTargetLanguageId: targetLanguageId,
+    });
+
     setLanguages(languagesResponse);
     setLanguagePairs(languagePairsResponse);
-
-    setSourceLanguageId((current) => current || languagesResponse[0]?.id || "");
-    setTargetLanguageId((current) => current || languagesResponse[1]?.id || "");
+    setSourceLanguageId(resolvedSelection.sourceLanguageId);
+    setTargetLanguageId(resolvedSelection.targetLanguageId);
   }
 
   function handleSourceLanguageChange(nextSourceLanguageId: string) {
     setSourceLanguageId(nextSourceLanguageId);
 
-    if (targetLanguageId === nextSourceLanguageId) {
-      const nextTarget = languages.find(
-        (language) => language.id !== nextSourceLanguageId,
-      );
+    const nextTargetLanguageOptions = getAvailableTargetLanguages(
+      nextSourceLanguageId,
+      languages,
+      languagePairs,
+    );
 
-      setTargetLanguageId(nextTarget?.id ?? "");
-    }
+    setTargetLanguageId(nextTargetLanguageOptions[0]?.id ?? "");
   }
 
   async function handleCreateLanguage(event: FormEvent<HTMLFormElement>) {
@@ -161,6 +251,17 @@ export function AdminLanguagesPage() {
 
     if (sourceLanguageId === targetLanguageId) {
       setError(t("admin.languages.errors.sameLanguages"));
+      return;
+    }
+
+    const pairAlreadyExists = languagePairs.some(
+      (pair) =>
+        pair.sourceLanguage.id === sourceLanguageId &&
+        pair.targetLanguage.id === targetLanguageId,
+    );
+
+    if (pairAlreadyExists) {
+      setError(t("admin.languages.errors.pairAlreadyExists"));
       return;
     }
 
@@ -214,7 +315,9 @@ export function AdminLanguagesPage() {
         <div>
           <p className="page-label">{t("admin.common.adminPanel")}</p>
           <h1>{t("admin.languages.title")}</h1>
-          <p className="page-description">{t("admin.languages.description")}</p>
+          <p className="page-description">
+            {t("admin.languages.description")}
+          </p>
         </div>
 
         <button type="button" className="secondary-button" onClick={reloadData}>
@@ -290,12 +393,12 @@ export function AdminLanguagesPage() {
               }
               required
             >
-              {languages.length === 0 ? (
+              {sourceLanguageOptions.length === 0 ? (
                 <option value="">
-                  {t("admin.languages.addLanguagesFirst")}
+                  {t("admin.languages.noAvailableSourceLanguages")}
                 </option>
               ) : (
-                languages.map((language) => (
+                sourceLanguageOptions.map((language) => (
                   <option key={language.id} value={language.id}>
                     {language.name} ({language.code})
                   </option>
@@ -332,7 +435,8 @@ export function AdminLanguagesPage() {
               isCreatingPair ||
               languages.length < 2 ||
               !sourceLanguageId ||
-              !targetLanguageId
+              !targetLanguageId ||
+              targetLanguageOptions.length === 0
             }
           >
             {isCreatingPair

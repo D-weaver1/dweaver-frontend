@@ -14,6 +14,7 @@ export type AiAnalysisJobStatus =
   | "pending"
   | "processing"
   | "waiting_rate_limit"
+  | "waiting_retry"
   | "completed"
   | "failed";
 
