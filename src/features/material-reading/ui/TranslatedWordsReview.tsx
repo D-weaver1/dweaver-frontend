@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { TranslatedWord } from "../model/materialReading.types";
+import type { LanguagePair } from "../../user-language-pairs/model/languagePair.types";
+import { playPronunciation } from "../lib/playPronunciation";
 
 type TranslatedWordsReviewProps = {
   words: TranslatedWord[];
+  languagePair: LanguagePair;
 };
 
-export function TranslatedWordsReview({ words }: TranslatedWordsReviewProps) {
+export function TranslatedWordsReview({
+  words,
+  languagePair,
+}: TranslatedWordsReviewProps) {
   const { t } = useTranslation();
   const [visibleTranslations, setVisibleTranslations] = useState<
     Record<string, boolean>
   >({});
+
+  const targetLanguageCode = languagePair.targetLanguage.code;
 
   function toggleTranslation(materialWordId: string) {
     setVisibleTranslations((prev) => ({
@@ -35,6 +43,14 @@ export function TranslatedWordsReview({ words }: TranslatedWordsReviewProps) {
         {words.map((word) => {
           const isTranslationVisible =
             visibleTranslations[word.materialWordId] ?? false;
+
+          const dictionaryWordDraft = {
+            sourceText: word.sourceText,
+            targetText: word.targetText,
+            languagePairId: languagePair.id,
+            sourceLanguageCode: languagePair.sourceLanguage.code,
+            targetLanguageCode: languagePair.targetLanguage.code,
+          };
 
           return (
             <div key={word.materialWordId} className="translated-word-card">
@@ -62,6 +78,9 @@ export function TranslatedWordsReview({ words }: TranslatedWordsReviewProps) {
                 <button
                   type="button"
                   className="translated-word-secondary-button"
+                  onClick={() =>
+                    playPronunciation(word.targetText, targetLanguageCode)
+                  }
                 >
                   {t("materialReading.translatedWords.listen")}
                 </button>
@@ -69,6 +88,9 @@ export function TranslatedWordsReview({ words }: TranslatedWordsReviewProps) {
                 <button
                   type="button"
                   className="translated-word-primary-button"
+                  onClick={() =>
+                    console.log("Add to dictionary draft:", dictionaryWordDraft)
+                  }
                 >
                   {t("materialReading.translatedWords.addToDictionary")}
                 </button>
