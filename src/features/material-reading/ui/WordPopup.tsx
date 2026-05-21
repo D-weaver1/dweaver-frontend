@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { TranslatedReadingUnit } from "../model/materialReading.types";
+import type { LanguagePair } from "../../user-language-pairs/model/languagePair.types";
+import { playPronunciation } from "../lib/playPronunciation";
 
 type WordPopupPosition = {
   top: number;
@@ -10,12 +12,28 @@ type WordPopupPosition = {
 type WordPopupProps = {
   unit: TranslatedReadingUnit;
   position: WordPopupPosition;
+  languagePair: LanguagePair;
   onClose: () => void;
 };
 
-export function WordPopup({ unit, position, onClose }: WordPopupProps) {
+export function WordPopup({
+  unit,
+  position,
+  languagePair,
+  onClose,
+}: WordPopupProps) {
   const { t } = useTranslation();
   const popupRef = useRef<HTMLDivElement | null>(null);
+
+  const targetLanguageCode = languagePair.targetLanguage.code;
+
+  const dictionaryWordDraft = {
+    sourceText: unit.sourceText,
+    targetText: unit.targetText,
+    languagePairId: languagePair.id,
+    sourceLanguageCode: languagePair.sourceLanguage.code,
+    targetLanguageCode: languagePair.targetLanguage.code,
+  };
 
   useEffect(() => {
     function handleMouseDown(event: MouseEvent) {
@@ -84,11 +102,21 @@ export function WordPopup({ unit, position, onClose }: WordPopupProps) {
       </div>
 
       <div className="word-floating-popup-actions">
-        <button type="button" className="word-floating-popup-secondary">
+        <button
+          type="button"
+          className="word-floating-popup-secondary"
+          onClick={() => playPronunciation(unit.targetText, targetLanguageCode)}
+        >
           {t("materialReading.wordPopup.listen")}
         </button>
 
-        <button type="button" className="word-floating-popup-primary">
+        <button
+          type="button"
+          className="word-floating-popup-primary"
+          onClick={() =>
+            console.log("Add to dictionary draft:", dictionaryWordDraft)
+          }
+        >
           {t("materialReading.wordPopup.addToDictionary")}
         </button>
       </div>
