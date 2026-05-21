@@ -1,4 +1,4 @@
-import { http } from "../../../shared/api/http";
+import { http, httpBlob } from "../../../shared/api/http";
 import type {
   MaterialLevelOption,
   MaterialLevelProgressStatus,
@@ -44,5 +44,15 @@ export const materialReadingApi = {
     return http<MaterialsProgressSummaryResponse>(
       `/materials/progress-summary${query}`,
     );
+  },
+
+  getPronunciationAudio(text: string, languageCode: string) {
+    return httpBlob("/tts/pronunciation", {
+      method: "POST",
+      body: JSON.stringify({
+        text,
+        languageCode,
+      }),
+    });
   },
 };

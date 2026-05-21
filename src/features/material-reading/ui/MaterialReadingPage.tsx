@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { materialReadingApi } from "../api/materialReadingApi";
+import { useLanguagePair } from "../../user-language-pairs/model/useLanguagePair";
 import { MATERIAL_LEVEL_TRANSLATION_KEYS } from "../model/materialReading.constants";
 import type {
   MaterialLevelProgressStatus,
@@ -25,7 +26,8 @@ export function MaterialReadingPage() {
 
   const navigate = useNavigate();
   const { t } = useTranslation();
-
+  const { currentLanguagePair, isLoading: isLanguagePairLoading } =
+    useLanguagePair();
   const [reading, setReading] = useState<MaterialReading | null>(null);
   const [selectedUnit, setSelectedUnit] =
     useState<TranslatedReadingUnit | null>(null);
@@ -143,7 +145,7 @@ export function MaterialReadingPage() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || isLanguagePairLoading) {
     return (
       <main className="material-reading-message">
         {t("materialReading.reading.loading")}
@@ -158,7 +160,13 @@ export function MaterialReadingPage() {
   if (!reading) {
     return null;
   }
-
+  if (!currentLanguagePair) {
+    return (
+      <main className="material-reading-message">
+        {t("materials.choosePairRequired")}
+      </main>
+    );
+  }
   const translationKeys = MATERIAL_LEVEL_TRANSLATION_KEYS[reading.factor];
 
   const levelTitle = translationKeys
@@ -227,12 +235,18 @@ export function MaterialReadingPage() {
         </button>
       </div>
 
-      {isCompleted && <TranslatedWordsReview words={reading.translatedWords} />}
+      {isCompleted && (
+        <TranslatedWordsReview
+          words={reading.translatedWords}
+          languagePair={currentLanguagePair}
+        />
+      )}
 
       {selectedUnit && popupPosition && (
         <WordPopup
           unit={selectedUnit}
           position={popupPosition}
+          languagePair={currentLanguagePair}
           onClose={closePopup}
         />
       )}
