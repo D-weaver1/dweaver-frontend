@@ -1672,6 +1672,7 @@ select {
   background: rgba(255, 255, 255, 0.86);
   padding: 32px;
   box-shadow: 0 14px 38px rgba(15, 31, 23, 0.08);
+  white-space: pre-line;
 }
 
 /* Text */
