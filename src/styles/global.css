@@ -218,6 +218,14 @@ input:focus {
   transform: translateY(0);
 }
 
+.container-box {
+  padding: clamp(24px, 4vw, 36px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-sm);
+}
+
 /* Home */
 
 .home-page {
@@ -240,6 +248,13 @@ input:focus {
       transparent 28rem
     );
   box-shadow: var(--shadow-md);
+}
+
+.home-page__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .home-page h1 {
@@ -1158,6 +1173,7 @@ input:focus {
 .language-pair-settings__available-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 14px;
   padding: 14px;
   border: 1px solid var(--color-border);

@@ -11,7 +11,8 @@
     "title": "Головна сторінка"
   },
   "nav": {
-    "startLearning": "Почати навчання"
+    "startLearning": "Почати навчання",
+    "startQuizzes": "Перевірити свої знания"
   },
   "materials": {
     "title": "Навчальні матеріали",

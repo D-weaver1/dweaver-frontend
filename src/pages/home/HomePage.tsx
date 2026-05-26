@@ -10,11 +10,18 @@ export function HomePage() {
       <h1>d-weaver</h1>
       <p>{t("home.title")}</p>
 
-      {!isLoading && isAuthenticated && (
-        <Link to="/materials" className="primary-button">
-          {t("nav.startLearning")}
-        </Link>
-      )}
+      <div className="home-page__buttons">
+        {!isLoading && isAuthenticated && (
+          <Link to="/materials" className="primary-button">
+            {t("nav.startLearning")}
+          </Link>
+        )}
+        {!isLoading && isAuthenticated && (
+          <Link to="/quizzes" className="primary-button">
+            {t("nav.startQuizzes")}
+          </Link>
+        )}
+      </div>
     </section>
   );
 }

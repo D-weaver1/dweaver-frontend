@@ -11,7 +11,8 @@
     "title": "Home page"
   },
   "nav": {
-    "startLearning": "Start learning"
+    "startLearning": "Start learning",
+    "startQuizzes": "Test your knowledge"
   },
   "materials": {
     "title": "Learning materials",

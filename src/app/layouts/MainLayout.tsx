@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "@/features/auth/model/useAuth";
 import { LanguagePairSelect } from "@/features/user-language-pairs/ui/LanguagePairSelect";
 import { useTranslation } from "react-i18next";
+import { Toaster } from "react-hot-toast";
 
 export function MainLayout() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -49,6 +50,7 @@ export function MainLayout() {
 
   return (
     <div>
+      <Toaster />
       <header className="app-header">
         <Link to="/" className="app-logo">
           d-weaver
