@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import type { TranslatedWord } from "../model/materialReading.types";
 import type { LanguagePair } from "../../user-language-pairs/model/languagePair.types";
 import { playPronunciation } from "../lib/playPronunciation";
+import { http } from "@/shared/api/http";
+import toast from "react-hot-toast";
 
 type TranslatedWordsReviewProps = {
   words: TranslatedWord[];
@@ -26,6 +28,22 @@ export function TranslatedWordsReview({
       [materialWordId]: !prev[materialWordId],
     }));
   }
+
+  const handleAddWord = async (wordId: string) => {
+    try {
+      await http(`/dictionaries/add-word`, {
+        method: "POST",
+        body: JSON.stringify({
+          languagePairId: languagePair.id,
+          wordId: wordId,
+        }),
+      });
+      toast.success("Word added to dictionary");
+    } catch (err) {
+      console.error("Failed to add word to dictionary", err);
+      toast.error("Failed to add word to dictionary");
+    }
+  };
 
   return (
     <section className="translated-words-section">
@@ -88,9 +106,7 @@ export function TranslatedWordsReview({
                 <button
                   type="button"
                   className="translated-word-primary-button"
-                  onClick={() =>
-                    console.log("Add to dictionary draft:", dictionaryWordDraft)
-                  }
+                  onClick={() => handleAddWord(word.wordId)}
                 >
                   {t("materialReading.translatedWords.addToDictionary")}
                 </button>

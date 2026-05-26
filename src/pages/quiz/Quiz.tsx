@@ -1,7 +1,7 @@
 import { http } from "@/shared/api/http";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { QuizResponse } from "../quizzes/interfaces";
 import toast from "react-hot-toast";
 
@@ -20,25 +20,29 @@ export function Quiz() {
     refetchOnReconnect: false,
   });
   const initialRef = useRef(true);
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answerState, setAnswerState] = useState<Record<string, boolean>>({});
+  const [answeredState, setAnsweredState] = useState<Record<string, boolean>>(
+    {},
+  );
+  const [answerState, setAnswerState] = useState<Record<string, string>>({});
   const [isAnswering, setIsAnswering] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
   const answeredCount = useMemo(
     () =>
       quiz?.questions.filter(
-        (q) => q.answered || answerState[q.id] !== undefined,
+        (q) => q.answered || answeredState[q.id] !== undefined,
       ).length,
-    [quiz?.questions, answerState],
+    [quiz?.questions, answeredState],
   );
   const correctCount = useMemo(
     () =>
       quiz?.questions.filter((q) => {
         const result =
-          answerState[q.id] !== undefined ? answerState[q.id] : q.isCorrect;
+          answeredState[q.id] !== undefined ? answeredState[q.id] : q.isCorrect;
         return result === true;
       }).length,
-    [quiz?.questions, answerState],
+    [quiz?.questions, answeredState],
   );
 
   useEffect(() => {
@@ -73,6 +77,8 @@ export function Quiz() {
 
     try {
       await http(`/quizzes/${quizId}/complete`, { method: "POST" });
+      toast.success("Quiz completed successfully");
+      navigate("/quizzes");
     } catch (err) {
       console.error("Failed to complete quiz", err);
       toast.error("Failed to complete quiz");
@@ -90,7 +96,11 @@ export function Quiz() {
         { method: "POST", body: JSON.stringify({ answer }) },
       );
 
-      setAnswerState((prev) => ({ ...prev, [questionId]: response.isCorrect }));
+      setAnsweredState((prev) => ({
+        ...prev,
+        [questionId]: response.isCorrect,
+      }));
+      setAnswerState((prev) => ({ ...prev, [questionId]: answer }));
     } catch (err) {
       console.error("Failed to submit answer", err);
       toast.error("Failed to submit answer");
@@ -103,11 +113,11 @@ export function Quiz() {
   const currentQuestion = quiz.questions[currentIndex];
 
   const currentAnswered =
-    currentQuestion.answered || answerState[currentQuestion.id] !== undefined;
+    currentQuestion.answered || answeredState[currentQuestion.id] !== undefined;
 
   const currentIsCorrect =
-    answerState[currentQuestion.id] !== undefined
-      ? answerState[currentQuestion.id]
+    answeredState[currentQuestion.id] !== undefined
+      ? answeredState[currentQuestion.id]
       : currentQuestion.isCorrect;
 
   const isAllAnswered = answeredCount === total;
@@ -143,7 +153,7 @@ export function Quiz() {
               type="button"
               disabled={isAnswering || currentAnswered}
               onClick={() => handleAnswer(currentQuestion.id, option.text)}
-              className="quiz-page__option"
+              className={`quiz-page__option ${currentAnswered && answerState[currentQuestion.id] === option.text ? (answeredState[currentQuestion.id] ? "quiz-page__option--correct" : " quiz-page__option--incorrect") : ""}`}
             >
               {option.text}
             </button>
@@ -169,6 +179,7 @@ export function Quiz() {
           {currentIndex < total - 1 && (
             <button
               type="button"
+              disabled={!currentAnswered}
               onClick={() =>
                 setCurrentIndex((prev) => Math.min(total - 1, prev + 1))
               }

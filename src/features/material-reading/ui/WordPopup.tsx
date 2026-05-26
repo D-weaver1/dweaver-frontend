@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import type { TranslatedReadingUnit } from "../model/materialReading.types";
 import type { LanguagePair } from "../../user-language-pairs/model/languagePair.types";
 import { playPronunciation } from "../lib/playPronunciation";
+import toast from "react-hot-toast";
+import { http } from "@/shared/api/http";
 
 type WordPopupPosition = {
   top: number;
@@ -65,6 +67,22 @@ export function WordPopup({
     };
   }, [onClose]);
 
+  const handleAddWord = async () => {
+    try {
+      await http(`/dictionaries/add-word`, {
+        method: "POST",
+        body: JSON.stringify({
+          languagePairId: languagePair.id,
+          wordId: unit.wordId,
+        }),
+      });
+      toast.success("Word added to dictionary");
+    } catch (err) {
+      console.error("Failed to add word to dictionary", err);
+      toast.error("Failed to add word to dictionary");
+    }
+  };
+
   return (
     <div
       ref={popupRef}
@@ -113,9 +131,7 @@ export function WordPopup({
         <button
           type="button"
           className="word-floating-popup-primary"
-          onClick={() =>
-            console.log("Add to dictionary draft:", dictionaryWordDraft)
-          }
+          onClick={handleAddWord}
         >
           {t("materialReading.wordPopup.addToDictionary")}
         </button>

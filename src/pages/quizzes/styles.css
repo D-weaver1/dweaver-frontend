@@ -128,3 +128,13 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+
+.quiz-page__option--correct {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.quiz-page__option--incorrect {
+  border-color: var(--color-danger);
+  background: var(--color-danger-light);
+}
