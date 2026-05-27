@@ -120,14 +120,19 @@ export function Quizzes() {
       <div className="quizzes__header">
         <h1>{t("quizzes.title")}</h1>
 
-        <button
-          type="button"
-          className="primary-button"
-          onClick={handleAdd}
-          disabled={isAdding}
-        >
-          {isAdding ? t("quizzes.creating") : t("quizzes.newQuiz")}
-        </button>
+        <div className="quizzes__header-btns">
+          <Link to="/dictionary" className="primary-button">
+            {t("quizzes.viewDictionary")}
+          </Link>
+          <button
+            type="button"
+            className="primary-button"
+            onClick={handleAdd}
+            disabled={isAdding}
+          >
+            {isAdding ? t("quizzes.creating") : t("quizzes.newQuiz")}
+          </button>
+        </div>
       </div>
 
       {visibleQuizzes.length === 0 && <p>{t("quizzes.notFound")}</p>}

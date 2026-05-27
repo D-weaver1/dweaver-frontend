@@ -11,6 +11,7 @@ import { AdminAiAnalysisPage } from "@/pages/admin-ai-analysis/AdminAiAnalysisPa
 import { AdminLanguagesPage } from "@/pages/admin-languages/AdminLanguagesPage";
 import { Quizzes } from "@/pages/quizzes/Quizzes";
 import { Quiz } from "@/pages/quiz/Quiz";
+import { Dictionary } from "@/pages/dictionary/Dictionary";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "/materials/:materialId/levels/:levelId",
         element: <MaterialReadingPage />,
+      },
+      {
+        path: "/dictionary",
+        element: <Dictionary />,
       },
       {
         path: "/quizzes",

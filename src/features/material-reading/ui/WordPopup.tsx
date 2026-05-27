@@ -29,14 +29,6 @@ export function WordPopup({
 
   const targetLanguageCode = languagePair.targetLanguage.code;
 
-  const dictionaryWordDraft = {
-    sourceText: unit.sourceText,
-    targetText: unit.targetText,
-    languagePairId: languagePair.id,
-    sourceLanguageCode: languagePair.sourceLanguage.code,
-    targetLanguageCode: languagePair.targetLanguage.code,
-  };
-
   useEffect(() => {
     function handleMouseDown(event: MouseEvent) {
       const target = event.target;
@@ -78,8 +70,7 @@ export function WordPopup({
       });
       toast.success("Word added to dictionary");
     } catch (err) {
-      console.error("Failed to add word to dictionary", err);
-      toast.error("Failed to add word to dictionary");
+      void err;
     }
   };
 

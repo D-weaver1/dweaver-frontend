@@ -9,6 +9,9 @@
   padding: 0;
   margin: 0;
   margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .quiz-list__item {
@@ -129,12 +132,31 @@
   flex-wrap: wrap;
 }
 
+.quiz-page__option:disabled {
+  opacity: 0.8;
+  color: var(--color-text);
+}
+
 .quiz-page__option--correct {
   border-color: var(--color-primary);
   background: var(--color-primary-light);
+  opacity: 1 !important;
 }
 
 .quiz-page__option--incorrect {
   border-color: var(--color-danger);
   background: var(--color-danger-light);
+  opacity: 1 !important;
+}
+
+.quizzes__header-btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dictionary-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

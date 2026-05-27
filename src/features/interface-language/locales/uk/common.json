@@ -32,7 +32,8 @@
   },
   "common": {
     "loading": "Завантаження...",
-    "close": "Закрити"
+    "close": "Закрити",
+    "back": "Назад"
   },
   "languagePair": {
     "choosePair": "Оберіть пару",
@@ -205,6 +206,9 @@
       }
     }
   },
+  "dictionary": {
+    "yourDictionary": "Ваш словник"
+  },
   "quizzes": {
     "title": "Ваші тести",
     "authRequired": "Увійдіть в акаунт, щоб переглядати тести.",
@@ -220,7 +224,8 @@
     "noDictionaries": "У вас ще немає словників.",
     "noDictionaryForPair": "У вас немає словника для поточної мовної пари.",
     "unknownError": "Невідома помилка",
-    "createError": "Не вдалося створити тест: {{message}}"
+    "createError": "Не вдалося створити тест: {{message}}",
+    "viewDictionary": "Відкрити словник"
   },
   "quiz": {
     "title": "Тест: {{source}} → {{target}}",

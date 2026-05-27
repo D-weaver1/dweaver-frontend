@@ -32,7 +32,8 @@
   },
   "common": {
     "loading": "Loading...",
-    "close": "Close"
+    "close": "Close",
+    "back": "Back"
   },
   "languagePair": {
     "choosePair": "Choose pair",
@@ -205,6 +206,9 @@
       }
     }
   },
+  "dictionary": {
+    "yourDictionary": "Your dictionary"
+  },
   "quizzes": {
     "title": "Your quizzes",
     "authRequired": "Sign in to view quizzes.",
@@ -220,7 +224,8 @@
     "noDictionaries": "You do not have any dictionaries yet.",
     "noDictionaryForPair": "You do not have a dictionary for the current language pair.",
     "unknownError": "Unknown error",
-    "createError": "Failed to create quiz: {{message}}"
+    "createError": "Failed to create quiz: {{message}}",
+    "viewDictionary": "Open dictionary"
   },
   "quiz": {
     "title": "Quiz: {{source}} → {{target}}",

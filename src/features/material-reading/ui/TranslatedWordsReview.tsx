@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { TranslatedWord } from "../model/materialReading.types";
 import type { LanguagePair } from "../../user-language-pairs/model/languagePair.types";
@@ -9,11 +9,15 @@ import toast from "react-hot-toast";
 type TranslatedWordsReviewProps = {
   words: TranslatedWord[];
   languagePair: LanguagePair;
+  inDictionary?: boolean;
+  header?: ReactNode;
 };
 
 export function TranslatedWordsReview({
   words,
   languagePair,
+  header,
+  inDictionary = false,
 }: TranslatedWordsReviewProps) {
   const { t } = useTranslation();
   const [visibleTranslations, setVisibleTranslations] = useState<
@@ -40,35 +44,30 @@ export function TranslatedWordsReview({
       });
       toast.success("Word added to dictionary");
     } catch (err) {
-      console.error("Failed to add word to dictionary", err);
-      toast.error("Failed to add word to dictionary");
+      void err;
     }
   };
 
   return (
     <section className="translated-words-section">
-      <div className="translated-words-header">
-        <h2 className="translated-words-title">
-          {t("materialReading.translatedWords.title")}
-        </h2>
+      {!inDictionary && (
+        <div className="translated-words-header">
+          <h2 className="translated-words-title">
+            {t("materialReading.translatedWords.title")}
+          </h2>
 
-        <p className="translated-words-description">
-          {t("materialReading.translatedWords.description")}
-        </p>
-      </div>
+          <p className="translated-words-description">
+            {t("materialReading.translatedWords.description")}
+          </p>
+        </div>
+      )}
+      {header && <div className="translated-words-header">{header}</div>}
 
       <div className="translated-words-list">
         {words.map((word) => {
-          const isTranslationVisible =
-            visibleTranslations[word.materialWordId] ?? false;
-
-          const dictionaryWordDraft = {
-            sourceText: word.sourceText,
-            targetText: word.targetText,
-            languagePairId: languagePair.id,
-            sourceLanguageCode: languagePair.sourceLanguage.code,
-            targetLanguageCode: languagePair.targetLanguage.code,
-          };
+          const isTranslationVisible = inDictionary
+            ? true
+            : (visibleTranslations[word.materialWordId] ?? false);
 
           return (
             <div key={word.materialWordId} className="translated-word-card">
@@ -83,15 +82,17 @@ export function TranslatedWordsReview({
               </div>
 
               <div className="translated-word-actions">
-                <button
-                  type="button"
-                  className="translated-word-secondary-button"
-                  onClick={() => toggleTranslation(word.materialWordId)}
-                >
-                  {isTranslationVisible
-                    ? t("materialReading.translatedWords.hideTranslation")
-                    : t("materialReading.translatedWords.showTranslation")}
-                </button>
+                {!inDictionary && (
+                  <button
+                    type="button"
+                    className="translated-word-secondary-button"
+                    onClick={() => toggleTranslation(word.materialWordId)}
+                  >
+                    {isTranslationVisible
+                      ? t("materialReading.translatedWords.hideTranslation")
+                      : t("materialReading.translatedWords.showTranslation")}
+                  </button>
+                )}
 
                 <button
                   type="button"
@@ -103,13 +104,15 @@ export function TranslatedWordsReview({
                   {t("materialReading.translatedWords.listen")}
                 </button>
 
-                <button
-                  type="button"
-                  className="translated-word-primary-button"
-                  onClick={() => handleAddWord(word.wordId)}
-                >
-                  {t("materialReading.translatedWords.addToDictionary")}
-                </button>
+                {!inDictionary && (
+                  <button
+                    type="button"
+                    className="translated-word-primary-button"
+                    onClick={() => handleAddWord(word.wordId)}
+                  >
+                    {t("materialReading.translatedWords.addToDictionary")}
+                  </button>
+                )}
               </div>
             </div>
           );
