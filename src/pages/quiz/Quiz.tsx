@@ -4,9 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { QuizResponse } from "../quizzes/interfaces";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export function Quiz() {
+  const { t } = useTranslation();
   const { quizId } = useParams<{ quizId: string }>();
+
   const {
     data: quiz,
     isLoading,
@@ -19,8 +22,10 @@ export function Quiz() {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
+
   const initialRef = useRef(true);
   const navigate = useNavigate();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answeredState, setAnsweredState] = useState<Record<string, boolean>>(
     {},
@@ -28,6 +33,7 @@ export function Quiz() {
   const [answerState, setAnswerState] = useState<Record<string, string>>({});
   const [isAnswering, setIsAnswering] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
+
   const answeredCount = useMemo(
     () =>
       quiz?.questions.filter(
@@ -35,11 +41,13 @@ export function Quiz() {
       ).length,
     [quiz?.questions, answeredState],
   );
+
   const correctCount = useMemo(
     () =>
       quiz?.questions.filter((q) => {
         const result =
           answeredState[q.id] !== undefined ? answeredState[q.id] : q.isCorrect;
+
         return result === true;
       }).length,
     [quiz?.questions, answeredState],
@@ -65,11 +73,11 @@ export function Quiz() {
   }, [quiz]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("quiz.loading")}</div>;
   }
 
   if (isError || !quiz) {
-    return <div>Error happened</div>;
+    return <div>{t("quiz.loadError")}</div>;
   }
 
   const handleComplete = async () => {
@@ -77,14 +85,15 @@ export function Quiz() {
 
     try {
       await http(`/quizzes/${quizId}/complete`, { method: "POST" });
-      toast.success("Quiz completed successfully");
+
+      toast.success(t("quiz.completeSuccess"));
       navigate("/quizzes");
     } catch (err) {
       console.error("Failed to complete quiz", err);
-      toast.error("Failed to complete quiz");
+      toast.error(t("quiz.completeError"));
+    } finally {
+      setIsCompleting(false);
     }
-
-    setIsCompleting(false);
   };
 
   const handleAnswer = async (questionId: string, answer: string) => {
@@ -100,13 +109,14 @@ export function Quiz() {
         ...prev,
         [questionId]: response.isCorrect,
       }));
+
       setAnswerState((prev) => ({ ...prev, [questionId]: answer }));
     } catch (err) {
       console.error("Failed to submit answer", err);
-      toast.error("Failed to submit answer");
+      toast.error(t("quiz.answerError"));
+    } finally {
+      setIsAnswering(false);
     }
-
-    setIsAnswering(false);
   };
 
   const total = quiz.questions.length;
@@ -126,24 +136,35 @@ export function Quiz() {
     <section className="container-box quiz-page">
       <header className="quiz-page__header">
         <h1 className="quiz-page__title">
-          Quiz: {quiz.sourceLanguage.code.toUpperCase()} to{" "}
-          {quiz.targetLanguage.code.toUpperCase()}
+          {t("quiz.title", {
+            source: quiz.sourceLanguage.code.toUpperCase(),
+            target: quiz.targetLanguage.code.toUpperCase(),
+          })}
         </h1>
+
         <div className="quiz-page__stats">
-          {answeredCount}/{total} answered | {correctCount} correct
+          {t("quiz.stats", {
+            answered: answeredCount ?? 0,
+            total,
+            correct: correctCount ?? 0,
+          })}
         </div>
       </header>
 
       <div className="quiz-page__counter">
-        Question {currentIndex + 1} / {total}
+        {t("quiz.questionCounter", {
+          current: currentIndex + 1,
+          total,
+        })}
       </div>
 
       <article className="quiz-page__card">
         <h2 className="quiz-page__question">{currentQuestion.text}</h2>
+
         <p className="quiz-page__question-hint">
           {currentQuestion.type === "s2t_translate"
-            ? "Translate to target language"
-            : "Translate to source language"}
+            ? t("quiz.translateToTarget")
+            : t("quiz.translateToSource")}
         </p>
 
         <div className="quiz-page__options">
@@ -153,7 +174,14 @@ export function Quiz() {
               type="button"
               disabled={isAnswering || currentAnswered}
               onClick={() => handleAnswer(currentQuestion.id, option.text)}
-              className={`quiz-page__option ${currentAnswered && answerState[currentQuestion.id] === option.text ? (answeredState[currentQuestion.id] ? "quiz-page__option--correct" : " quiz-page__option--incorrect") : ""}`}
+              className={`quiz-page__option ${
+                currentAnswered &&
+                answerState[currentQuestion.id] === option.text
+                  ? answeredState[currentQuestion.id]
+                    ? "quiz-page__option--correct"
+                    : "quiz-page__option--incorrect"
+                  : ""
+              }`}
             >
               {option.text}
             </button>
@@ -168,13 +196,16 @@ export function Quiz() {
                 : "quiz-page__result quiz-page__result--wrong"
             }
           >
-            {currentIsCorrect === true ? "Correct answer" : "Wrong answer"}
+            {currentIsCorrect === true
+              ? t("quiz.correctAnswer")
+              : t("quiz.wrongAnswer")}
           </p>
         )}
       </article>
 
       <footer className="quiz-page__footer">
         <div />
+
         <div className="quiz-page__footer-actions">
           {currentIndex < total - 1 && (
             <button
@@ -185,7 +216,7 @@ export function Quiz() {
               }
               className="primary-button"
             >
-              Next
+              {t("quiz.next")}
             </button>
           )}
 
@@ -196,7 +227,7 @@ export function Quiz() {
               disabled={isCompleting}
               onClick={handleComplete}
             >
-              {isCompleting ? "Completing..." : "Complete quiz"}
+              {isCompleting ? t("quiz.completing") : t("quiz.completeQuiz")}
             </button>
           )}
         </div>

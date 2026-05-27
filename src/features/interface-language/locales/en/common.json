@@ -203,6 +203,40 @@
         "sameLanguages": "Source and target languages must be different",
         "pairAlreadyExists": "This language pair already exists"
       }
+    },
+    "quizzes": {
+      "title": "Your quizzes",
+      "authRequired": "Sign in to view quizzes.",
+      "choosePairRequired": "Choose a language pair before starting quizzes.",
+      "loading": "Loading quizzes...",
+      "loadError": "Failed to load quizzes",
+      "notFound": "No quizzes for the current language pair yet.",
+      "newQuiz": "New quiz",
+      "creating": "Creating...",
+      "startQuiz": "Start quiz",
+      "continueQuiz": "Continue quiz",
+      "lastAttempt": "Last attempt: {{correct}} / {{total}}",
+      "noDictionaries": "You do not have any dictionaries yet.",
+      "noDictionaryForPair": "You do not have a dictionary for the current language pair.",
+      "unknownError": "Unknown error",
+      "createError": "Failed to create quiz: {{message}}"
+    },
+    "quiz": {
+      "title": "Quiz: {{source}} → {{target}}",
+      "loading": "Loading quiz...",
+      "loadError": "Failed to load quiz",
+      "stats": "{{answered}}/{{total}} answered | {{correct}} correct",
+      "questionCounter": "Question {{current}} / {{total}}",
+      "translateToTarget": "Translate to target language",
+      "translateToSource": "Translate to source language",
+      "correctAnswer": "Correct answer",
+      "wrongAnswer": "Wrong answer",
+      "next": "Next",
+      "completeQuiz": "Complete quiz",
+      "completing": "Completing...",
+      "completeSuccess": "Quiz completed successfully",
+      "completeError": "Failed to complete quiz",
+      "answerError": "Failed to submit answer"
     }
   }
 }
