@@ -262,10 +262,6 @@ export function AdminAiAnalysisPage() {
             {t("admin.aiAnalysis.description")}
           </p>
         </div>
-
-        <button type="button" className="secondary-button" onClick={loadJobs}>
-          {t("admin.aiAnalysis.refreshJobs")}
-        </button>
       </div>
 
       <form className="admin-panel-card admin-ai-form" onSubmit={handleSubmit}>
@@ -381,6 +377,9 @@ export function AdminAiAnalysisPage() {
             <p className="page-label">{t("admin.aiAnalysis.queue")}</p>
             <h2>{t("admin.aiAnalysis.recentJobs")}</h2>
           </div>
+          <button type="button" className="secondary-button" onClick={loadJobs}>
+            {t("admin.aiAnalysis.refreshJobs")}
+          </button>
         </div>
 
         {jobs.length === 0 ? (
