@@ -14,6 +14,7 @@ interface QuizShortAttempt {
 
 interface QuizShort {
   id: string;
+  title: string;
   sourceLanguage: Language;
   targetLanguage: Language;
   attempts: QuizShortAttempt[];

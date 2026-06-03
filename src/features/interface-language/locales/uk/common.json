@@ -207,7 +207,9 @@
     }
   },
   "dictionary": {
-    "yourDictionary": "Ваш словник"
+    "yourDictionary": "Ваш словник",
+    "searchPlaceholder": "Пошук у словнику...",
+    "exportPdf": "Експорт у PDF"
   },
   "quizzes": {
     "title": "Ваші тести",
@@ -225,7 +227,12 @@
     "noDictionaryForPair": "У вас немає словника для поточної мовної пари.",
     "unknownError": "Невідома помилка",
     "createError": "Не вдалося створити тест: {{message}}",
-    "viewDictionary": "Відкрити словник"
+    "viewDictionary": "Відкрити словник",
+    "filter": {
+      "all": "Усі",
+      "started": "Розпочаті",
+      "completed": "Завершені"
+    }
   },
   "quiz": {
     "title": "Тест: {{source}} → {{target}}",

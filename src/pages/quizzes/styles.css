@@ -160,3 +160,70 @@
   align-items: center;
   gap: 8px;
 }
+
+.dictionary-word-line {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 120px;
+}
+
+.dictionary-word-line__btns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-group .btn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.btn-group .btn:hover {
+  border-color: var(--color-primary);
+}
+
+.btn-group .btn.btn-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.dictionary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dictionary-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.mode-toggle {
+  flex-shrink: 0;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.bg-amber-300 {
+  background-color: #fbbf24;
+}

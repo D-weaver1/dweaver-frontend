@@ -207,7 +207,9 @@
     }
   },
   "dictionary": {
-    "yourDictionary": "Your dictionary"
+    "yourDictionary": "Your dictionary",
+    "searchPlaceholder": "Search in dictionary...",
+    "exportPdf": "Export to PDF"
   },
   "quizzes": {
     "title": "Your quizzes",
@@ -225,7 +227,12 @@
     "noDictionaryForPair": "You do not have a dictionary for the current language pair.",
     "unknownError": "Unknown error",
     "createError": "Failed to create quiz: {{message}}",
-    "viewDictionary": "Open dictionary"
+    "viewDictionary": "Open dictionary",
+    "filter": {
+      "all": "All",
+      "started": "Started",
+      "completed": "Completed"
+    }
   },
   "quiz": {
     "title": "Quiz: {{source}} → {{target}}",

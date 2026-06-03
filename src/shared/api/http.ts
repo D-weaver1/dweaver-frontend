@@ -41,6 +41,7 @@ export async function http<T>(
   path: string,
   options: RequestInit = {},
   retry = true,
+  raw = false,
 ): Promise<T> {
   const headers = new Headers(options.headers);
 
@@ -74,6 +75,10 @@ export async function http<T>(
     throw new Error(
       errorData?.message || `Request failed with status ${response.status}`,
     );
+  }
+
+  if (raw) {
+    return response as unknown as T;
   }
 
   return parseResponse(response) as Promise<T>;

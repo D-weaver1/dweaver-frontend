@@ -38,6 +38,7 @@ export function Quizzes() {
   });
 
   const [isAdding, setIsAdding] = useState(false);
+  const [mode, setMode] = useState<"all" | "started" | "completed">("started");
   const navigate = useNavigate();
 
   const visibleQuizzes = useMemo(() => {
@@ -45,12 +46,26 @@ export function Quizzes() {
       return [];
     }
 
-    return quizzes.filter(
+    let result = quizzes.filter(
       (quiz) =>
         quiz.sourceLanguage.code === currentLanguagePair.sourceLanguage.code &&
         quiz.targetLanguage.code === currentLanguagePair.targetLanguage.code,
     );
-  }, [quizzes, currentLanguagePair]);
+
+    if (mode === "started") {
+      result = result.filter((quiz) =>
+        quiz.attempts.some((attempt) => !attempt.completedAt),
+      );
+    } else if (mode === "completed") {
+      result = result.filter(
+        (quiz) =>
+          quiz.attempts.every((attempt) => attempt.completedAt) &&
+          quiz.attempts.length > 0,
+      );
+    }
+
+    return result;
+  }, [quizzes, currentLanguagePair, mode]);
 
   if (isAuthLoading || isLanguagePairLoading) {
     return <div>{t("common.loading")}</div>;
@@ -118,7 +133,21 @@ export function Quizzes() {
   return (
     <section className="container-box quizzes">
       <div className="quizzes__header">
-        <h1>{t("quizzes.title")}</h1>
+        <div className="quizzes__header-btns">
+          <h1>{t("quizzes.title")}</h1>
+          <div className="btn-group">
+            {["all", "started", "completed"].map((m) => (
+              <button
+                key={m}
+                type="button"
+                className={`btn ${mode === m ? "btn-active" : ""}`}
+                onClick={() => setMode(m as "all" | "started" | "completed")}
+              >
+                {t(`quizzes.filter.${m}`)}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div className="quizzes__header-btns">
           <Link to="/dictionary" className="primary-button">
@@ -147,7 +176,9 @@ export function Quizzes() {
           return (
             <li key={quiz.id} className="quiz-list__item">
               <div>
-                {quiz.sourceLanguage.name} {"->"} {quiz.targetLanguage.name}
+                {quiz.title
+                  ? quiz.title
+                  : `${quiz.sourceLanguage.name} -> ${quiz.targetLanguage.name}`}
               </div>
 
               <div className="quiz-list__item-btns">
