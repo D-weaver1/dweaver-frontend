@@ -42,7 +42,10 @@ export function Dictionary() {
       )
       .sort((a, b) => a[key].localeCompare(b[key]));
   }, [dictionary, mode, query]);
-  const targetLanguageCode = currentLanguagePair?.targetLanguage.code;
+  const pronounceLngCode =
+    mode === "s_t"
+      ? currentLanguagePair?.targetLanguage.code
+      : currentLanguagePair?.sourceLanguage.code;
 
   const handleExportPdf = async () => {
     setIsExporting(true);
@@ -137,8 +140,11 @@ export function Dictionary() {
                     type="button"
                     className="translated-word-secondary-button"
                     onClick={() => {
-                      if (targetLanguageCode) {
-                        playPronunciation(word.targetText, targetLanguageCode);
+                      if (pronounceLngCode) {
+                        playPronunciation(
+                          mode === "s_t" ? word.targetText : word.sourceText,
+                          pronounceLngCode,
+                        );
                       }
                     }}
                   >
