@@ -227,3 +227,8 @@
 .bg-amber-300 {
   background-color: #fbbf24;
 }
+
+.quiz-page__input {
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}

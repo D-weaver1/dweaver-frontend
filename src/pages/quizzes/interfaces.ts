@@ -32,7 +32,7 @@ export type DictionariesResponse = MyDictionary[];
 
 interface QuizQuestion {
   id: string;
-  type: "s2t_translate" | "t2s_translate";
+  type: "s2t_translate" | "t2s_translate" | "s2t_input";
   text: string;
   answered: boolean;
   isCorrect?: boolean;

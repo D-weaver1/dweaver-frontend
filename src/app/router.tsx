@@ -12,6 +12,7 @@ import { AdminLanguagesPage } from "@/pages/admin-languages/AdminLanguagesPage";
 import { Quizzes } from "@/pages/quizzes/Quizzes";
 import { Quiz } from "@/pages/quiz/Quiz";
 import { Dictionary } from "@/pages/dictionary/Dictionary";
+import { AdminTemplatesPage } from "@/pages/admin-templates/AdminTemplatesPage";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "admin/languages",
         element: <AdminLanguagesPage />,
+      },
+      {
+        path: "admin/templates",
+        element: <AdminTemplatesPage />,
       },
       {
         path: "login",

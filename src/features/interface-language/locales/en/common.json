@@ -127,6 +127,7 @@
   },
   "admin": {
     "nav": {
+      "templates": "Templates",
       "aiAnalysis": "AI analysis",
       "languages": "Languages"
     },
@@ -204,6 +205,27 @@
         "sameLanguages": "Source and target languages must be different",
         "pairAlreadyExists": "This language pair already exists"
       }
+    },
+    "templates": {
+      "title": "Question templates",
+      "description": "Manage per-language text templates used when generating quiz questions.",
+      "manage": "Templates by question type",
+      "empty": "No templates found.",
+      "templatePlaceholder": "Enter template text...",
+      "save": "Save",
+      "saving": "Saving...",
+      "updated": "Template updated successfully",
+      "questionTypes": {
+        "s2t_input": "Source to target (input)",
+        "s2t_translate": "Source to target (choice)",
+        "t2s_translate": "Target to source (choice)"
+      },
+      "errors": {
+        "loadFailed": "Failed to load templates",
+        "updateFailed": "Failed to update template",
+        "templateRequired": "Template text is required",
+        "unsupportedQuestionType": "Unsupported question type"
+      }
     }
   },
   "dictionary": {
@@ -242,6 +264,8 @@
     "questionCounter": "Question {{current}} / {{total}}",
     "translateToTarget": "Translate to target language",
     "translateToSource": "Translate to source language",
+    "typeTranslation": "Type your translation",
+    "submitAnswer": "Submit",
     "correctAnswer": "Correct answer",
     "wrongAnswer": "Wrong answer",
     "next": "Next",

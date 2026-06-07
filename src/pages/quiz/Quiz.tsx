@@ -33,6 +33,7 @@ export function Quiz() {
   const [answerState, setAnswerState] = useState<Record<string, string>>({});
   const [isAnswering, setIsAnswering] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const answeredCount = useMemo(
     () =>
@@ -71,6 +72,11 @@ export function Quiz() {
       setCurrentIndex(idx);
     }
   }, [quiz]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInputValue("");
+  }, [currentIndex]);
 
   if (isLoading) {
     return <div>{t("quiz.loading")}</div>;
@@ -162,31 +168,66 @@ export function Quiz() {
         <h2 className="quiz-page__question">{currentQuestion.text}</h2>
 
         <p className="quiz-page__question-hint">
-          {currentQuestion.type === "s2t_translate"
-            ? t("quiz.translateToTarget")
-            : t("quiz.translateToSource")}
+          {currentQuestion.type === "t2s_translate"
+            ? t("quiz.translateToSource")
+            : t("quiz.translateToTarget")}
         </p>
 
-        <div className="quiz-page__options">
-          {currentQuestion.options.map((option, idx) => (
-            <button
-              key={idx}
-              type="button"
+        {currentQuestion.type === "s2t_input" ? (
+          <form
+            className="quiz-page__input-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (inputValue.trim() && !currentAnswered && !isAnswering) {
+                handleAnswer(currentQuestion.id, inputValue.trim());
+              }
+            }}
+          >
+            <input
+              type="text"
+              className="quiz-page__input"
+              value={
+                currentAnswered
+                  ? (answerState[currentQuestion.id] ?? "")
+                  : inputValue
+              }
+              onChange={(e) => setInputValue(e.target.value)}
               disabled={isAnswering || currentAnswered}
-              onClick={() => handleAnswer(currentQuestion.id, option.text)}
-              className={`quiz-page__option ${
-                currentAnswered &&
-                answerState[currentQuestion.id] === option.text
-                  ? answeredState[currentQuestion.id]
-                    ? "quiz-page__option--correct"
-                    : "quiz-page__option--incorrect"
-                  : ""
-              }`}
-            >
-              {option.text}
-            </button>
-          ))}
-        </div>
+              placeholder={t("quiz.typeTranslation")}
+              autoFocus
+            />
+            {!currentAnswered && (
+              <button
+                type="submit"
+                className="primary-button"
+                disabled={isAnswering || !inputValue.trim()}
+              >
+                {t("quiz.submitAnswer")}
+              </button>
+            )}
+          </form>
+        ) : (
+          <div className="quiz-page__options">
+            {currentQuestion.options.map((option, idx) => (
+              <button
+                key={idx}
+                type="button"
+                disabled={isAnswering || currentAnswered}
+                onClick={() => handleAnswer(currentQuestion.id, option.text)}
+                className={`quiz-page__option ${
+                  currentAnswered &&
+                  answerState[currentQuestion.id] === option.text
+                    ? answeredState[currentQuestion.id]
+                      ? "quiz-page__option--correct"
+                      : "quiz-page__option--incorrect"
+                    : ""
+                }`}
+              >
+                {option.text}
+              </button>
+            ))}
+          </div>
+        )}
 
         {currentAnswered && (
           <p

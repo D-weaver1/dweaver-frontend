@@ -61,6 +61,7 @@ export function MainLayout() {
             <>
               {user?.role === "admin" && (
                 <>
+                  <Link to="/admin/templates">{t("admin.nav.templates")}</Link>
                   <Link to="/admin/ai-analysis">
                     {t("admin.nav.aiAnalysis")}
                   </Link>
