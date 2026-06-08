@@ -250,6 +250,7 @@
     "unknownError": "Невідома помилка",
     "createError": "Не вдалося створити тест: {{message}}",
     "viewDictionary": "Відкрити словник",
+    "viewStats": "Статистика",
     "filter": {
       "all": "Усі",
       "started": "Розпочаті",

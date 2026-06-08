@@ -150,6 +150,9 @@ export function Quizzes() {
         </div>
 
         <div className="quizzes__header-btns">
+          <Link to="/quiz-stats" className="primary-button">
+            {t("quizzes.viewStats")}
+          </Link>
           <Link to="/dictionary" className="primary-button">
             {t("quizzes.viewDictionary")}
           </Link>

@@ -250,6 +250,7 @@
     "unknownError": "Unknown error",
     "createError": "Failed to create quiz: {{message}}",
     "viewDictionary": "Open dictionary",
+    "viewStats": "Statistics",
     "filter": {
       "all": "All",
       "started": "Started",

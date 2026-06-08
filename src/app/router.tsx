@@ -13,6 +13,7 @@ import { Quizzes } from "@/pages/quizzes/Quizzes";
 import { Quiz } from "@/pages/quiz/Quiz";
 import { Dictionary } from "@/pages/dictionary/Dictionary";
 import { AdminTemplatesPage } from "@/pages/admin-templates/AdminTemplatesPage";
+import { QuizStats } from "@/pages/quiz-stats/QuizStats";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "/quizzes/:quizId",
         element: <Quiz />,
+      },
+      {
+        path: "/quiz-stats",
+        element: <QuizStats />,
       },
     ],
   },
